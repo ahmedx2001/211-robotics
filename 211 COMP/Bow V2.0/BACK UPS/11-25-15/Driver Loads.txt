@@ -1,0 +1,21 @@
+		//if(vexRT[Btn8U] == 1){
+		//	SensorValue(I2C_1) = 0;
+		//	LoaderCycles = 0;
+		//	while(vexRT[Btn8U] == 1){
+		//		LoaderCycles++;
+		//		while(SensorValue(I2C_1) < 550 && vexRT[Btn8U] == 1){
+		//			if(SensorValue(BowPot) > 2600){
+		//				Loader(127);
+		//				Bow(60);
+		//			}
+		//			else{
+		//				Bow(80);
+		//				Loader(-60);
+		//			}
+		//		}
+		//		SensorValue(I2C_1) = 0;
+		//		Bow(0);
+		//		wait1Msec(450);
+		//	}
+		//	Loader(0);
+		//}
