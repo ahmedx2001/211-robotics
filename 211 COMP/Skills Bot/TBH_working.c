@@ -210,7 +210,6 @@ task main()
 	startTask( FwControlTask );
 
 	bool AutoFeed = false;
-	bool pressed;
 	int AutoIndex = 0;
 	int IntakeCycles = 0;
 
@@ -219,11 +218,11 @@ task main()
 	{
 		// Different speeds set by buttons
 		if( vexRT[ Btn8U ] == 1 )
-			FwVelocitySet( 200, 0.55 );
+			FwVelocitySet( 170, 0.55 );
 		if( vexRT[ Btn8L ] == 1 )
-			FwVelocitySet( 120, 0.38 );
+			FwVelocitySet( 145, 0.38 );
 		if( vexRT[ Btn8R ] == 1 )
-			FwVelocitySet( 50, 0.2 );
+			FwVelocitySet( 125, 0.2 );
 		if( vexRT[ Btn8D ] == 1 )
 			FwVelocitySet( 00, 0 );
 
@@ -270,7 +269,6 @@ task main()
 			motor[Index] = AutoIndex;
 		}
 
-
 		///////////// AUTO FEED CODE /////////////////
 		if (vexRT[Btn7U] == 1) AutoFeed = true;
 		else if (vexRT[Btn7D] == 1) AutoFeed = false;
@@ -278,12 +276,9 @@ task main()
 		if (AutoFeed == true){
 			AutoIndex = 127;
 		}//AutoFeed
-
-
 		else {
 			AutoIndex = 0;
 		}
-
 		// Don't hog the cpu :)
 		wait1Msec(10);
 	}
