@@ -16,13 +16,9 @@
 
 //pid speed presets
 const int FullCourt = 4500;
-const int HalfCourt = 3600;
+const int HalfCourt = 3400;
 const int Close = 3000;
-const int FullEP = 127; // should be close
-const int HalfEP = 60; //not sure
-const int CloseEP = 50; // not sure
 int Target = 0;
-float EP = 0;
 int RPM = 0;
 int Guess = 0;
 
@@ -71,7 +67,9 @@ task autonomous()
 
 task usercontrol()
 {
-	startTask(ShooterBangBang);
+	// Start the flywheel control task
+	startTask( ShooterBangBang );
+
 	bool AutoFeed = false;
 	bool pressed;
 	int AutoIndex = 0;
@@ -79,9 +77,10 @@ task usercontrol()
 	while (true)
 	{
 		//////// DRIVE ////////
-		if(abs(vexRT[Ch3]) > 10 || abs(vexRT[Ch4]) > 10){
-			motor[LeftDrive]  = (vexRT[Ch3] + vexRT[Ch4]);
-			motor[RightDrive]   = (vexRT[Ch3] - vexRT[Ch4]);
+		if(abs(vexRT[Ch3]) > 10 || abs(vexRT[Ch4]) > 10 ||
+			abs(vexRT[Ch1]) > 10 || abs(vexRT[Ch2]) > 10){
+			motor[LeftDrive]  = ((vexRT[Ch2] + vexRT[Ch1])/2 - (vexRT[Ch3] - vexRT[Ch4]));
+			motor[RightDrive]   = ((vexRT[Ch2] - vexRT[Ch1])/2 - (vexRT[Ch3] + vexRT[Ch4]));
 		}
 		else{
 			motor[LeftDrive]  = 0;
@@ -91,26 +90,22 @@ task usercontrol()
 		//////// SHOOTER ///////
 		if (vexRT(Btn8L) == 1){
 			Target = Close;
-			EP = CloseEP;
 		}
 		else if (vexRT(Btn8U) == 1){
 			Target  = HalfCourt;
-			EP = HalfEP;
 		}
 		else if (vexRT(Btn8R) == 1){
 			Target  = FullCourt;
-			EP = FullEP;
 		}
 		else if (vexRT(Btn8D) == 1){
 			Target  = 0;
-			EP = 0;
 		}
 
 		/////// INTAKE ////////
-		if(vexRT[Btn5U] == 1){
+		if(vexRT[Btn6U] == 1){
 			motor[Intake]   = 127;
 		}
-		else if(vexRT[Btn5D] == 1){
+		else if(vexRT[Btn6D] == 1){
 			if (IntakeCycles < 500){
 				motor[Intake] = 0;
 			}
@@ -128,36 +123,15 @@ task usercontrol()
 
 
 		/////// INDEXER ////////
-		if(vexRT[Btn6U] == 1){
+		if(vexRT[Btn5U] == 1){
 			motor[Index]   = 127;
 		}
-		else if(vexRT[Btn6D] == 1){
+		else if(vexRT[Btn5D] == 1){
 			motor[Index] = -127;
 			AutoFeed = false;
 		}
 		else {
 			motor[Index] = AutoIndex;
-		}
-
-
-		//////// SHOOTER GUESS ///////
-		if (vexRT(Btn7L) == 1){
-			if(pressed == false){
-				Guess-=10;
-			}
-			pressed = true;
-		}
-		else if (vexRT(Btn7R) == 1){
-			if(pressed == false){
-				Guess+=10;
-			}
-			pressed = true;
-		}
-		else if (vexRT(Btn7D) == 1){
-			Guess  = 0;
-		}
-		else{
-			pressed = false;
 		}
 
 
