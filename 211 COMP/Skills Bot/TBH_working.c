@@ -30,12 +30,12 @@ task main()
 	while(1)
 	{
 		// Different speeds set by buttons
-		if( vexRT[ Btn8U ] == 1 )
-			FwVelocitySet( 170, 0.55 );
-		if( vexRT[ Btn8L ] == 1 )
-			FwVelocitySet( 145, 0.38 );
 		if( vexRT[ Btn8R ] == 1 )
-			FwVelocitySet( 125, 0.2 );
+			FwVelocitySet( 170, 0.47 );
+		if( vexRT[ Btn8U ] == 1 )
+			FwVelocitySet( 145, 0.47 );
+		if( vexRT[ Btn8L ] == 1 )
+			FwVelocitySet( 125, 0.39 );
 		if( vexRT[ Btn8D ] == 1 )
 			FwVelocitySet( 00, 0 );
 

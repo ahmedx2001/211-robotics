@@ -5,13 +5,6 @@
 // Maximum power we want to send to the flywheel motors
 #define FW_MAX_POWER              127
 
-// encoder counts per revolution depending on motor
-#define MOTOR_TPR_269           240.448
-#define MOTOR_TPR_393R          261.333
-#define MOTOR_TPR_393S          392
-#define MOTOR_TPR_393T          627.2
-#define MOTOR_TPR_QUAD          360.0
-
 // encoder tick per revolution
 float           ticks_per_rev;          ///< encoder ticks per revolution
 
@@ -158,11 +151,11 @@ task
 FwControlTask()
 {
 	// Set the gain
-	gain = 0.00025;
+	gain = 0.0005;
 
 	// We are using Speed geared motors
 	// Set the encoder ticks per revolution
-	ticks_per_rev = MOTOR_TPR_QUAD;
+	ticks_per_rev = 360;
 
 	while(1)
 	{
