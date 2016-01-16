@@ -24,7 +24,6 @@
 #include "Vex_Competition_Includes.c"   //Main competition background code...do not modify!
 
 #include "TBH_Library.c"
-#include "PID_Library.c"
 
 
 void pre_auton()
@@ -51,7 +50,6 @@ task usercontrol()
 
 	// Start the flywheel control task
 	startTask( FwControlTask );
-	startPIDTasks();
 
 	bool AutoFeed = false;
 	int AutoIndex = 0;
@@ -71,18 +69,14 @@ task usercontrol()
 			FwVelocitySet( 00, 0 );
 
 		//////// DRIVE ////////
-		//if(abs(vexRT[Ch3]) > 10 || abs(vexRT[Ch4]) > 10 ||
-		//	abs(vexRT[Ch1]) > 10 || abs(vexRT[Ch2]) > 10){
-		//	motor[LeftDrive]  = ((vexRT[Ch2] + vexRT[Ch1])/2 - (vexRT[Ch3] - vexRT[Ch4]));
-		//	motor[RightDrive]   = ((vexRT[Ch2] - vexRT[Ch1])/2 - (vexRT[Ch3] + vexRT[Ch4]));
-		//}
-		//else{
-		//	motor[LeftDrive]  = 0;
-		//	motor[RightDrive]  = 0;
-		//}
-
-		if(vexRT[Btn7U]){
-			setTarget(10);
+		if(abs(vexRT[Ch3]) > 10 || abs(vexRT[Ch4]) > 10 ||
+			abs(vexRT[Ch1]) > 10 || abs(vexRT[Ch2]) > 10){
+			motor[LeftDrive]  = ((vexRT[Ch2] + vexRT[Ch1])/2 - (vexRT[Ch3] - vexRT[Ch4]));
+			motor[RightDrive]   = ((vexRT[Ch2] - vexRT[Ch1])/2 - (vexRT[Ch3] + vexRT[Ch4]));
+		}
+		else{
+			motor[LeftDrive]  = 0;
+			motor[RightDrive]  = 0;
 		}
 
 		/////// INTAKE ////////
@@ -120,15 +114,15 @@ task usercontrol()
 		}
 
 		///////////// AUTO FEED CODE /////////////////
-		//if (vexRT[Btn7U] == 1) AutoFeed = true;
-		//else if (vexRT[Btn7D] == 1) AutoFeed = false;
+		if (vexRT[Btn7U] == 1) AutoFeed = true;
+		else if (vexRT[Btn7D] == 1) AutoFeed = false;
 
-		//if (AutoFeed == true){
-		//	AutoIndex = 127;
-		//}//AutoFeed
-		//else {
-		//	AutoIndex = 0;
-		//}
+		if (AutoFeed == true){
+			AutoIndex = 127;
+		}//AutoFeed
+		else {
+			AutoIndex = 0;
+		}
 
 		// Don't hog the cpu :)
 		wait1Msec(10);

@@ -1,7 +1,7 @@
 
 //pid vlaues
-const long pVal = 1;
-const long iVal = 0.045;
+const long pVal = 10;
+const long iVal = 0;
 const long dVal = 0;
 
 //cm pre encoder ticks
@@ -47,30 +47,38 @@ task pidLeft(){
 
 		//current distance calculation
 		left_currentDis = SensorValue[LeftEncoder] * cmPreTick;
+		writeDebugStreamLine("current dis: %d", left_currentDis);
 
 		//error
 		left_error = targetDis - left_currentDis;
+		writeDebugStreamLine("last error: %d", left_error);
 		left_sumError = left_sumError + left_error;
+		writeDebugStreamLine("sum error: %d", left_sumError);
 
 		//p change
 		left_pChange = left_error * pVal;
+		writeDebugStreamLine("p change: %d", left_pChange);
 
 		//i change
 		left_iChange = left_sumError * iVal;
+		writeDebugStreamLine("i error: %d", left_iChange);
 
 		//d change
 		left_slope = left_error - left_lastError;
 		left_dChange = left_slope * dVal;
+		writeDebugStreamLine("d error: %d", left_dChange);
 
 		//total change
 		left_tChange = left_pChange + left_iChange + left_dChange;
+
+		writeDebugStreamLine("total change: %d", left_tChange);
 
 		//update motor
 		motor[LeftDrive] = left_tChange;
 
 
 		left_lastError = left_error;
-		wait1Msec(50);
+		wait1Msec(100);
 	}//while loop
 }//left pid task
 
@@ -103,7 +111,7 @@ task pidRight(){
 
 
 		right_lastError = right_error;
-		wait1Msec(50);
+		wait1Msec(100);
 	}//while loop
 }//right pid task
 
@@ -141,4 +149,9 @@ void clearVals(){
 	right_currentDis = 0;
 
 	SensorValue[RightEncoder] = 0;
+}
+
+void startPIDTasks(){
+	startTask( pidRight );
+	startTask( pidLeft );
 }
