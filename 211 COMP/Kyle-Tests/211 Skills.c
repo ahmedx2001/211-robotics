@@ -1,4 +1,5 @@
 #pragma config(Sensor, in1,    TurnGyro,       sensorGyro)
+#pragma config(Sensor, dgtl1,  BaseLock,       sensorDigitalOut)
 #pragma config(Sensor, dgtl7,  LeftEncoder,    sensorQuadEncoder)
 #pragma config(Sensor, dgtl9,  RightEncoder,   sensorQuadEncoder)
 #pragma config(Sensor, dgtl11, ShooterEncoder, sensorQuadEncoder)
@@ -16,44 +17,21 @@
 
 #pragma platform(VEX)
 #pragma competitionControl(Competition)
+#include "GlobalVariables.c"
+#include "GyroLib.c"
 #include "TBH_Library.c"
+#include "Functions.c"
+#include "PositionTrackingLibrary.c"
 #include "Vex_Competition_Includes.c"
 
 #pragma DebuggerWindows("debugStream")  //Open Debug Stream Window
 
 
-/////////////////////////////////////////////////////////////////////////////////////////
-//
-//                          Pre-Autonomous Functions
-//
-/////////////////////////////////////////////////////////////////////////////////////////
-
-void pre_auton()
-{
-	// Set bStopTasksBetweenModes to false if you want to keep user created tasks running between
-	// Autonomous and Tele-Op modes. You will need to manage all user created tasks if set to false.
-	bStopTasksBetweenModes = true;
-
-	// All activities that occur before the competition starts
-	// Example: clearing encoders, setting servo positions, ...
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////
-//
-//                                 Autonomous Task
-//
-/////////////////////////////////////////////////////////////////////////////////////////
 
 task autonomous()
 {
 
 }
-
-/////////////////////////////////////////////////////////////////////////////////////////
-//
-//                                 User Control Task
-//
-/////////////////////////////////////////////////////////////////////////////////////////
 
 task usercontrol()
 {
@@ -64,18 +42,49 @@ task usercontrol()
 	int IntakeSpeed = 0;
 	int AutoIndex = 0;
 	int AutoIntake = 0;
+	int XSpeed = 0;
+	int YSpeed = 0;
+	int LastX = 0;
+	int LastY = 0;
+	int XDiff = 0;
+	int YDiff = 0;
 	while (true)
 	{
 		//////// DRIVE ////////
 		if(abs(vexRT[Ch3]) > 10 || abs(vexRT[Ch4]) > 10 ||
 			abs(vexRT[Ch1]) > 10 || abs(vexRT[Ch2]) > 10){
-			motor[LeftDrive]  = ((vexRT[Ch2] + vexRT[Ch1])/2 - (vexRT[Ch3] - vexRT[Ch4]));
-			motor[RightDrive]   = ((vexRT[Ch2] - vexRT[Ch1])/2 - (vexRT[Ch3] + vexRT[Ch4]));
+			// Get joysticks
+			XSpeed = 0.5*vexRT[Ch2] - vexRT[Ch3];
+			YSpeed = 0.5*vexRT[Ch1] - vexRT[Ch4];
+			// Calculate the change and save the value
+			XDiff = XSpeed - LastX;
+			YDiff = YSpeed - LastY;
+
+			// Slew rate limiting
+			if(abs(XDiff) > SlewRate){
+				if (XDiff > 0)
+					XSpeed = LastX + SlewRate;
+				else
+					XSpeed = LastX - SlewRate;
+			}
+			else if(abs(YDiff) > SlewRate){
+				if (XDiff > 0)
+					YSpeed = LastY + SlewRate;
+				else
+					YSpeed = LastY - SlewRate;
+			}
+			// Save current speed values
+			LastX = XSpeed;
+			LastY = YSpeed;
 		}
+		// Deadband
 		else{
-			motor[LeftDrive]  = 0;
-			motor[RightDrive]  = 0;
+			XSpeed = 0;
+			XSpeed = 0;
 		}
+		// Set motor speed
+		motor[LeftDrive] = XSpeed + YSpeed;		//((vexRT[Ch2] + vexRT[Ch1])/2 - (vexRT[Ch3] - vexRT[Ch4]));
+		motor[RightDrive] = XSpeed - YSpeed;		//((vexRT[Ch2] - vexRT[Ch1])/2 - (vexRT[Ch3] + vexRT[Ch4]));
 
 		//////// SHOOTER ///////
 		if( vexRT[ Btn8R ] == 1 )
@@ -113,19 +122,6 @@ task usercontrol()
 				IntakeSpeed = 0;
 			}
 		}
-
-
-		//if(vexRT[Btn6U] == 1){
-		//	motor[Intake]   = 127;
-		//}
-		//else if(vexRT[Btn6D] == 1){
-		//	motor[Intake] = -127;
-		//	AutoIntake = 0;
-		//}
-		//else {
-		//	motor[Intake] = AutoIndex;
-		//}
-
 
 		/////// INDEXER ////////
 		if(vexRT[Btn5U] == 1){
