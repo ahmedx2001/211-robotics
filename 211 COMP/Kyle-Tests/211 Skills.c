@@ -30,6 +30,10 @@
 
 task autonomous()
 {
+////// TEST ///////
+GoTo(10, 10, 200);
+
+
 
 }
 

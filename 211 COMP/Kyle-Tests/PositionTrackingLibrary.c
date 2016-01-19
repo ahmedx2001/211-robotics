@@ -1,4 +1,34 @@
 ////////////// POSITION TRACKING LIBRARY ////////////////
+// Position Tracking Variables
+float NewDistance = 0;
+int NewAngle = 0;
+
+
+
+
+void GoTo(float Xnew, float Ynew, int FinalHeading){
+
+
+
+}
+
+
+void GetDistance(float Xnew, float Ynew){
+	float Xdiff;
+	float Ydiff;
+
+	Xdiff = Xnew - Xpos;
+	Ydiff = Ynew - Ypos;
+
+	// Distance to target
+	NewDistance = sqrt(pow(Xdiff,2) + pow(Ydiff,2));
+
+	// Angle to target
+	atan2(Xdiff, Ydiff) * 180/PI;
+}
+
+
+
 
 // position tracking
 task PositionTrack(){
@@ -35,6 +65,6 @@ task PositionTrack(){
 		displayLCDNumber(1, 7, Ypos);
 		displayLCDNumber(1, 9, Ypos);
 
-		wait1Msec(100);
+		wait1Msec(25);
 	}
 }
