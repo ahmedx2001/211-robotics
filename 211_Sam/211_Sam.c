@@ -86,19 +86,11 @@ task usercontrol()
 			motor[Intake]   = 127;
 		}
 		else if(vexRT[Btn6D] == 1){
-			if (IntakeCycles < 500){
-				motor[Intake] = 0;
-			}
-			IntakeCycles++;
-			if (IntakeCycles > 500){
-				motor[Intake]   = -127;
-			}
+				motor[Intake] = -127;
 		}
+
 		else{
-			if(IntakeCycles > 250){
 				motor[Intake] = 0;
-			}
-			IntakeCycles = 0;
 		}
 
 		/////// INDEXER ////////
