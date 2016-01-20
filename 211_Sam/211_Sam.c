@@ -102,7 +102,7 @@ task usercontrol()
 			AutoFeed = false;
 		}
 		else {
-			motor[Index] = AutoIndex;
+			motor[Index] = 0;
 		}
 
 		///////////// AUTO FEED CODE /////////////////
