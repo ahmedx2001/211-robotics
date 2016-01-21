@@ -47,13 +47,14 @@ task autonomous()
 
 task usercontrol()
 {
-
-	// Start the flywheel control task
+// Start the flywheel control task
 	startTask( FwControlTask );
 
-	bool AutoFeed = false;
+	bool IntakeButton = false;
+	int IntakeSpeed = 0;
 	int AutoIndex = 0;
-	int IntakeCycles = 0;
+	int AutoIntake = 0;
+
 
 	// Main user control loop
 	while(1)
@@ -62,11 +63,14 @@ task usercontrol()
 		if( vexRT[ Btn8R ] == 1 )
 			FwVelocitySet( 170, 0.47 );
 		if( vexRT[ Btn8U ] == 1 )
-			FwVelocitySet( 145, 0.47 );
+			FwVelocitySet( 100, 0.47 );
 		if( vexRT[ Btn8L ] == 1 )
-			FwVelocitySet( 125, 0.39 );
-		if( vexRT[ Btn8D ] == 1 )
+			FwVelocitySet( 128, 0.39 ); // Full court
+		if( vexRT[ Btn8D ] == 1 ){
 			FwVelocitySet( 00, 0 );
+			AutoIndex = 0;
+			AutoIntake = 0;
+		}
 
 		//////// DRIVE ////////
 		if(abs(vexRT[Ch3]) > 10 || abs(vexRT[Ch4]) > 10 ||
@@ -80,25 +84,27 @@ task usercontrol()
 		}
 
 		/////// INTAKE ////////
-
-
+		motor[Intake] = IntakeSpeed+AutoIntake;
 		if(vexRT[Btn6U] == 1){
-			motor[Intake]   = 127;
+			IntakeSpeed = 127;
 		}
 		else if(vexRT[Btn6D] == 1){
-			if (IntakeCycles < 500){
-				motor[Intake] = 0;
+			if (IntakeSpeed == 127){
+				IntakeButton = true;
+				AutoIntake = 0;
+				IntakeSpeed = 0;
 			}
-			IntakeCycles++;
-			if (IntakeCycles > 500){
-				motor[Intake]   = -127;
+			else {
+				if (IntakeButton == false){
+					IntakeSpeed = -127;
+				}
 			}
 		}
 		else{
-			if(IntakeCycles > 250){
-				motor[Intake] = 0;
+			IntakeButton = false;
+			if (IntakeSpeed == -127){
+				IntakeSpeed = 0;
 			}
-			IntakeCycles = 0;
 		}
 
 		/////// INDEXER ////////
@@ -107,22 +113,17 @@ task usercontrol()
 		}
 		else if(vexRT[Btn5D] == 1){
 			motor[Index] = -127;
-			AutoFeed = false;
+			AutoIntake = 0;
 		}
 		else {
 			motor[Index] = AutoIndex;
 		}
 
 		///////////// AUTO FEED CODE /////////////////
-		if (vexRT[Btn7U] == 1) AutoFeed = true;
-		else if (vexRT[Btn7D] == 1) AutoFeed = false;
-
-		if (AutoFeed == true){
+		if (vexRT[Btn7U] == 1){
 			AutoIndex = 127;
+			AutoIntake = 127;
 		}//AutoFeed
-		else {
-			AutoIndex = 0;
-		}
 
 		// Don't hog the cpu :)
 		wait1Msec(10);

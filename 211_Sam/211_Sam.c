@@ -47,7 +47,6 @@ task autonomous()
 
 task usercontrol()
 {
-
 	// Start the flywheel control task
 	startTask( FwControlTask );
 
