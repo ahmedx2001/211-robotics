@@ -36,13 +36,10 @@ long            motor_drive;            ///< final motor control value
 void
 FwMotorSet( int value )
 {
-	motor[ LeftShooter1 ] = value;
-	motor[ LeftShooter2 ] = value;
-	motor[ LeftShooter3 ] = value;
-
-	motor[ RightShooter1 ] = value;
-	motor[ RightShooter2 ] = value;
-	motor[ RightShooter3 ] = value;
+	motor[ Shooter1 ] = value;
+	motor[ Shooter2 ] = value;
+	motor[ Shooter3 ] = value;
+	motor[ Shooter4 ] = value;
 }
 
 /*-----------------------------------------------------------------------------*/
