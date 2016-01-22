@@ -1,5 +1,7 @@
 #pragma config(Sensor, in1,    TurnGyro,       sensorGyro)
 #pragma config(Sensor, dgtl1,  IntakePn,       sensorDigitalOut)
+#pragma config(Sensor, dgtl2,  BrakePn1,       sensorDigitalOut)
+#pragma config(Sensor, dgtl3,  BrakePn2,       sensorDigitalOut)
 #pragma config(Sensor, dgtl7,  LeftEncoder,    sensorQuadEncoder)
 #pragma config(Sensor, dgtl9,  RightEncoder,   sensorQuadEncoder)
 #pragma config(Sensor, dgtl11, ShooterEncoder, sensorQuadEncoder)
@@ -112,11 +114,22 @@ task usercontrol()
 				IntakeSpeed = 0;
 			}
 	}
-		if(vexRT[Btn7L] == 1){
+
+	/////////// Pneumatics ////////////
+	if(vexRT[Btn7L] == 1){
 			SensorValue[IntakePn] = 1;
 		}
 		else {
 			SensorValue[IntakePn] = 0;
+		}
+
+		if(vexRT[Btn7D] == 1) {
+			SensorValue[BrakePn1] = 1;
+			SensorValue[BrakePn2] = 1;
+		}
+		else {
+			SensorValue[BrakePn1] = 0;
+			SensorValue[BrakePn2] = 0;
 		}
 
 		/////// INDEXER ////////
