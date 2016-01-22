@@ -25,7 +25,6 @@ task main()
 	startTask(LCD);
 
 
-
 	while (true)
 	{
 		// AUTONOMOUS

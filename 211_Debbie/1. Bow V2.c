@@ -26,12 +26,12 @@
 #pragma autonomousDuration(20)
 #pragma userControlDuration(120)
 
+/// Defult Auto ///
+int AutoSelect = 1;
 
-// Defult Autonomous
-int AutoSelect = 2;
 
 
-#include "GlobalVariables.c"
+
 #include "GyroLib.c"
 #include "Functions.c"
 #include "Auto.c"
@@ -45,11 +45,18 @@ task autonomous()
 	case 1:
 		// Skills
 		break;
+
 		// AUTO ROUTINES
 	case 2:
 		//BALL AUTO
 		Balls(3500);
 		break;
+	case 3:
+		// FrontL
+		FrontL();
+	case 4:
+		// FrontL
+		FrontR();
 	case 19:
 		// LEFT TEST
 		LeftTest();

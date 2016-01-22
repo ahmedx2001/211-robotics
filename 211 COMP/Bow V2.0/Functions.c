@@ -9,12 +9,13 @@ void Bow(int BowSpeed){
 
 ////// MOVES THE DRIVE BASE //////
 void BaseSpeed(int LeftSpeed, int RightSpeed) {
-	setMotor(Left1, LeftSpeed);
-	setMotor(Left2, LeftSpeed);
-	setMotor(Left3, LeftSpeed);
-	setMotor(Right1, RightSpeed);
-	setMotor(Right2, RightSpeed);
-	setMotor(Right3, RightSpeed);
+	motor[Left1] = LeftSpeed;
+	motor[Left2] = LeftSpeed;
+	motor[Left3] = LeftSpeed;
+
+	motor[Right1] = RightSpeed;
+	motor[Right2] = RightSpeed;
+	motor[Right3] = RightSpeed;
 }
 
 /////// SHOOT BALLS ///////
