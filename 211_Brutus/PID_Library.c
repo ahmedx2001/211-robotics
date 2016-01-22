@@ -11,6 +11,8 @@ shooter( int value )
 }
 
 
+const int full = 3400;
+const int half = 2500;
 
 //++++++++++++++++++++PID Stuff++++++++++++++++++++
 const bool debug = false;
@@ -74,12 +76,27 @@ task pid(){											//PID task
 
 		shooter(tChange);
 
+				if(currentRPM >= targetRPM){
+			SensorValue[ledSpeed] = 0;
+		}else{
+			SensorValue[ledSpeed] = 1;
+		}
+
+		if (targetRPM == full){
+			SensorValue[ledFull] = 0;
+			SensorValue[ledHalf] = 1;
+		}else if(targetRPM == half){
+			SensorValue[ledFull] = 1;
+			SensorValue[ledHalf] = 0;
+		}else{
+			SensorValue[ledFull] = 1;
+			SensorValue[ledHalf] = 1;
+		}
+
+
 		//lastError = error;
 		lastVal = val;
 		wait1Msec(10);
-
-
-
 	}//while loop
 }//task
 
