@@ -53,16 +53,14 @@ task usercontrol()
 	while(1)
 	{
 		// Different speeds set by buttons
-		if( vexRT[ Btn8R ] == 1 )
+		if( vexRT[ Btn8RXmtr2 ] == 1 )
 			targetRPM = half;
-		if( vexRT[ Btn8U ] == 1 )
+		if( vexRT[ Btn8UXmtr2 ] == 1 )
 			targetRPM = 1000;
-		if( vexRT[ Btn8L ] == 1 )
+		if( vexRT[ Btn8LXmtr2 ] == 1 )
 			targetRPM = full;
-		if( vexRT[ Btn8D ] == 1 ){
+		if( vexRT[ Btn8DXmtr2 ] == 1 ){
 			targetRPM = 0;
-			AutoIndex = 0;
-			AutoIntake = 0;
 		}
 
 		//////// DRIVE ////////
@@ -101,10 +99,10 @@ task usercontrol()
 		}
 
 		/////// INDEXER ////////
-		if(vexRT[Btn5U] == 1){
+		if(vexRT[Btn5UXmtr2] == 1){
 			motor[Index]   = 127;
 		}
-		else if(vexRT[Btn5D] == 1){
+		else if(vexRT[Btn5DXmtr2] == 1){
 			motor[Index] = -127;
 			AutoIndex = 0;
 		}
@@ -117,6 +115,10 @@ task usercontrol()
 			AutoIndex = 127;
 			AutoIntake = 127;
 		}//AutoFeed
+		if(vexRT[Btn7D] == 1){
+			AutoIndex = 0;
+			AutoIntake = 0;
+		}
 
 		// Don't hog the cpu :)
 		wait1Msec(10);
