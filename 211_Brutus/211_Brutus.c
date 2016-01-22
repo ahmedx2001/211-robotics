@@ -113,7 +113,7 @@ task usercontrol()
 		}
 		else if(vexRT[Btn5D] == 1){
 			motor[Index] = -127;
-			AutoIntake = 0;
+			AutoIndex = 0;
 		}
 		else {
 			motor[Index] = AutoIndex;

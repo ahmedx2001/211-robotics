@@ -401,11 +401,11 @@ task LCD() {
 			//displayLCDNumber(1, 0, SensorValue(BowEncoder));
 			//displayLCDNumber(1, 0, SensorValue(RightEncoder));
 			//displayLCDNumber(1, 0, SensorValue(BowPot));
-			//displayLCDNumber(1, 0, abs(SensorValue(TensionEncoder)));
 			//displayLCDNumber(1, 0, GyroAngleDegGet());
 			//displayLCDNumber(1, 0, SmartMotorGetTemperature(Left1));
-			//displayLCDNumber(1, 4, AutoSelect);
-			//displayLCDString(1, 6, AutoName);
+			displayLCDNumber(1, 0, abs(SensorValue(TensionEncoder)));
+			displayLCDNumber(1, 4, AutoSelect);
+			displayLCDString(1, 6, AutoName);
 
 
 			if (nLCDButtons == 1){
@@ -446,22 +446,10 @@ task LCD() {
 				AutoName = "Park AUTO";
 				break;
 			case 4:
-				AutoName = "WalloB";
+				AutoName = "FrontL";
 				break;
 			case 5:
-				AutoName = "WalloR";
-				break;
-			case 6:
-				AutoName = "Front L";
-				break;
-			case 7:
-				AutoName = "Front R";
-				break;
-				case 8:
-				AutoName = "SideMid B";
-				break;
-			case 9:
-				AutoName = "SideMid R";
+				AutoName = "FrontR";
 				break;
 
 				//TEST CODE
