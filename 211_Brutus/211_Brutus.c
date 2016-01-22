@@ -52,16 +52,15 @@ task usercontrol()
 	// Main user control loop
 	while(1)
 	{
-		// Different speeds set by buttons
-		if( vexRT[ Btn8RXmtr2 ] == 1 )
-			targetRPM = half;
-		if( vexRT[ Btn8UXmtr2 ] == 1 )
-			targetRPM = 1000;
-		if( vexRT[ Btn8LXmtr2 ] == 1 )
-			targetRPM = full;
-		if( vexRT[ Btn8DXmtr2 ] == 1 ){
-			targetRPM = 0;
-		}
+
+
+		if (vexRT[Btn8UXmtr2]) targetRPM = full;
+		else if (vexRT[Btn8LXmtr2])targetRPM = 1000;
+		else if (vexRT[Btn8RXmtr2])targetRPM = half;
+		else if (vexRT[Btn8DXmtr2])targetRPM = 0;
+
+
+		if (vexRT[Btn6UXmtr2]) shooter(vexRT[Ch2Xmtr2]);
 
 		//////// DRIVE ////////
 		if(abs(vexRT[Ch3]) > 10 || abs(vexRT[Ch4]) > 10 ||

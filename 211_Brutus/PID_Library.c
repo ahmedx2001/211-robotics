@@ -1,13 +1,13 @@
 void
 shooter( int value )
 {
-	motor[ LeftShooter1 ] = value;
-	motor[ LeftShooter2 ] = value;
-	motor[ LeftShooter3 ] = value;
+	motor[ LeftShooter1 ] = abs(value);
+	motor[ LeftShooter2 ] = abs(value);
+	motor[ LeftShooter3 ] = abs(value);
 
-	motor[ RightShooter1 ] = value;
-	motor[ RightShooter2 ] = value;
-	motor[ RightShooter3 ] = value;
+	motor[ RightShooter1 ] = abs(value);
+	motor[ RightShooter2 ] = abs(value);
+	motor[ RightShooter3 ] = abs(value);
 }
 
 
@@ -42,61 +42,63 @@ int currentRPM;
 
 task pid(){											//PID task
 	while(true){
-		//++++++++++++++++++++Current RPM++++++++++++++++++++
-		val = SensorValue[ShooterEncoder];
-		diff = val - lastVal;
-		currentRPM = diff*100*60*25/360;
-		//-----------------End Current RPM ------------------
+		if (!vexRT[Btn6UXmtr2]){
+			//++++++++++++++++++++Current RPM++++++++++++++++++++
+			val = SensorValue[ShooterEncoder];
+			diff = val - lastVal;
+			currentRPM = diff*100*60*25/360;
+			//-----------------End Current RPM ------------------
 
-		//write to debug stream
-		if (debug) writeDebugStreamLine("Current RPM: %d", currentRPM);
-		if (debug) writeDebugStreamLine("Tagrget RPM: %d", targetRPM);
+			//write to debug stream
+			if (debug) writeDebugStreamLine("Current RPM: %d", currentRPM);
+			if (debug) writeDebugStreamLine("Tagrget RPM: %d", targetRPM);
 
-		//get error
-		error = targetRPM - currentRPM;
-		if (debug) writeDebugStreamLine("Error: %d", error);
-		//sumError = sumError + error;
+			//get error
+			error = targetRPM - currentRPM;
+			if (debug) writeDebugStreamLine("Error: %d", error);
+			//sumError = sumError + error;
 
-		//p calculations
-		pChange = error * pVal;
-		if (debug) writeDebugStreamLine("P Change: %d\n", pChange);
+			//p calculations
+			pChange = error * pVal;
+			if (debug) writeDebugStreamLine("P Change: %d\n", pChange);
 
-		//i calculations
-		//iChange = sumError * iVal;
+			//i calculations
+			//iChange = sumError * iVal;
 
-		//d calculations
-		//slope = error - lastError;
-		//dChange = slope * dVal;
+			//d calculations
+			//slope = error - lastError;
+			//dChange = slope * dVal;
 
-		//total pid changes
-		tChange = pChange; //+ iChange + dChange;
+			//total pid changes
+			tChange = pChange; //+ iChange + dChange;
 
-		//make sure motor doesnt run backwards
-		if(tChange<0) tChange = 0;
+			//make sure motor doesnt run backwards
+			if(tChange<0) tChange = 0;
 
-		shooter(tChange);
+			shooter(tChange);
 
-				if(currentRPM >= targetRPM){
-			SensorValue[ledSpeed] = 0;
-		}else{
-			SensorValue[ledSpeed] = 1;
+			if(currentRPM >= targetRPM){
+				SensorValue[ledSpeed] = 0;
+				}else{
+				SensorValue[ledSpeed] = 1;
+			}
+
+			if (targetRPM == full){
+				SensorValue[ledFull] = 0;
+				SensorValue[ledHalf] = 1;
+				}else if(targetRPM == half){
+				SensorValue[ledFull] = 1;
+				SensorValue[ledHalf] = 0;
+				}else{
+				SensorValue[ledFull] = 1;
+				SensorValue[ledHalf] = 1;
+			}
+
+
+			//lastError = error;
+			lastVal = val;
+			wait1Msec(10);
 		}
-
-		if (targetRPM == full){
-			SensorValue[ledFull] = 0;
-			SensorValue[ledHalf] = 1;
-		}else if(targetRPM == half){
-			SensorValue[ledFull] = 1;
-			SensorValue[ledHalf] = 0;
-		}else{
-			SensorValue[ledFull] = 1;
-			SensorValue[ledHalf] = 1;
-		}
-
-
-		//lastError = error;
-		lastVal = val;
-		wait1Msec(10);
 	}//while loop
 }//task
 
