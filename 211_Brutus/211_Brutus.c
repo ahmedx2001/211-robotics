@@ -86,51 +86,61 @@ task usercontrol()
 			motor[RightDrive]  = 0;
 		}
 
-		/////// INTAKE ////////
-		motor[Intake] = IntakeSpeed+AutoIntake;
-		if(vexRT[Btn6U] == 1){
-			IntakeSpeed = 127;
-		}
-		else if(vexRT[Btn6D] == 1){
-			if (IntakeSpeed == 127){
-				IntakeButton = true;
-				AutoIntake = 0;
-				IntakeSpeed = 0;
-			}
-			else {
-				if (IntakeButton == false){
-					IntakeSpeed = -127;
-				}
-			}
-		}
-		else{
-			IntakeButton = false;
-			if (IntakeSpeed == -127){
-				IntakeSpeed = 0;
-			}
-		}
+		///////// INTAKE ////////
+		if(vexRT[Btn6U])motor[Intake]=127;
+		else if(vexRT[Btn6D])motor[Intake]=-127;
+		else motor[Intake]=0;
 
-		/////// INDEXER ////////
-		if(vexRT[Btn5UXmtr2] == 1){
-			motor[Index]   = 127;
-		}
-		else if(vexRT[Btn5DXmtr2] == 1){
-			motor[Index] = -127;
-			AutoIndex = 0;
-		}
-		else {
-			motor[Index] = AutoIndex;
-		}
 
-		///////////// AUTO FEED CODE /////////////////
-		if (vexRT[Btn7U] == 1){
-			AutoIndex = 127;
-			AutoIntake = 127;
-		}//AutoFeed
-		if(vexRT[Btn7D] == 1){
-			AutoIndex = 0;
-			AutoIntake = 0;
-		}
+		//motor[Intake] = IntakeSpeed+AutoIntake;
+		//if(vexRT[Btn6U] == 1){
+		//	IntakeSpeed = 127;
+		//}
+		//else if(vexRT[Btn6D] == 1){
+		//	if (IntakeSpeed == 127){
+		//		IntakeButton = true;
+		//		AutoIntake = 0;
+		//		IntakeSpeed = 0;
+		//	}
+		//	else {
+		//		if (IntakeButton == false){
+		//			IntakeSpeed = -127;
+		//		}
+		//	}
+		//}
+		//else{
+		//	IntakeButton = false;
+		//	if (IntakeSpeed == -127){
+		//		IntakeSpeed = 0;
+		//	}
+		//}
+
+		///////// INDEXER ////////
+
+
+		if(vexRT[Btn5UXmtr2]) motor[Index] = 127;
+		else if(vexRT[Btn5DXmtr2]) motor[Index] = -127;
+		else motor[Index] = 0;
+		//if(vexRT[Btn5UXmtr2] == 1){
+		//	motor[Index]   = 127;
+		//}
+		//else if(vexRT[Btn5DXmtr2] == 1){
+		//	motor[Index] = -127;
+		//	AutoIndex = 0;
+		//}
+		//else {
+		//	motor[Index] = AutoIndex;
+		//}
+
+		/////////////// AUTO FEED CODE /////////////////
+		//if (vexRT[Btn7U] == 1){
+		//	AutoIndex = 127;
+		//	AutoIntake = 127;
+		//}//AutoFeed
+		//if(vexRT[Btn7D] == 1){
+		//	AutoIndex = 0;
+		//	AutoIntake = 0;
+		//}
 
 		// Don't hog the cpu :)
 		wait1Msec(10);
