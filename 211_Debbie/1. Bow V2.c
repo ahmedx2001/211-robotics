@@ -27,7 +27,7 @@
 #pragma userControlDuration(120)
 
 /// Defult Auto ///
-int AutoSelect = 1;
+int AutoSelect = 2;
 
 
 
