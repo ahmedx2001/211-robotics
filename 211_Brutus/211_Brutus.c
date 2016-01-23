@@ -35,8 +35,8 @@ void pre_auton()
 
 task autonomous()
 {
-	startTask( FwControlTask );
-	FwVelocitySet( 128, 0.39 );
+	startTask( pid );
+	targetRPM = full;
 	wait1Msec(4000);
 	motor[Intake] = 127;
 	motor[Index]   = 127;
