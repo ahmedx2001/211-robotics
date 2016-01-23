@@ -84,10 +84,10 @@ task usercontrol()
 		//////// DRIVE ////////
 		if(abs(vexRT[Ch3]) > 10 || abs(vexRT[Ch4]) > 10 ||
 			abs(vexRT[Ch1]) > 10 || abs(vexRT[Ch2]) > 10){
-			motor[LeftDrive1]  = ((vexRT[Ch2] + vexRT[Ch1])/2 - (vexRT[Ch3] - vexRT[Ch4]));
-			motor[RightDrive1]   = ((vexRT[Ch2] - vexRT[Ch1])/2 - (vexRT[Ch3] + vexRT[Ch4]));
-			motor[LeftDrive2]  = ((vexRT[Ch2] + vexRT[Ch1])/2 - (vexRT[Ch3] - vexRT[Ch4]));
-			motor[RightDrive2]   = ((vexRT[Ch2] - vexRT[Ch1])/2 - (vexRT[Ch3] + vexRT[Ch4]));
+			motor[LeftDrive1]  = ((vexRT[Ch2] + vexRT[Ch1]) - (vexRT[Ch3] - vexRT[Ch4])/2);
+			motor[RightDrive1]   = ((vexRT[Ch2] - vexRT[Ch1]) - (vexRT[Ch3] + vexRT[Ch4])/2);
+			motor[LeftDrive2]  = ((vexRT[Ch2] + vexRT[Ch1]) - (vexRT[Ch3] - vexRT[Ch4])/2);
+			motor[RightDrive2]   = ((vexRT[Ch2] - vexRT[Ch1]) - (vexRT[Ch3] + vexRT[Ch4])/2);
 		}
 		else{
 			motor[LeftDrive1]  = 0;
