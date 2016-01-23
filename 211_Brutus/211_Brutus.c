@@ -26,7 +26,7 @@
 
 #include "Vex_Competition_Includes.c"   //Main competition background code...do not modify!
 
-#include "PID_Library.c"
+#include "TBH_Library.c"
 
 void pre_auton()
 {
@@ -41,7 +41,7 @@ task autonomous()
 task usercontrol()
 {
 	// Start the flywheel control task
-	startTask( pid );
+	startTask( FwControlTask );
 
 	bool IntakeButton = false;
 	int IntakeSpeed = 0;
@@ -54,13 +54,16 @@ task usercontrol()
 	{
 
 
-		if (vexRT[Btn8UXmtr2]) targetRPM = full;
-		else if (vexRT[Btn8LXmtr2])targetRPM = 1000;
-		else if (vexRT[Btn8RXmtr2])targetRPM = half;
-		else if (vexRT[Btn8DXmtr2])targetRPM = 0;
-
-
-		if (vexRT[Btn6UXmtr2]) shooter(vexRT[Ch2Xmtr2]);
+		// Different speeds set by buttons
+		if( vexRT[ Btn8UXmtr2 ] == 1 )
+			FwVelocitySet( 128, 0.39 );
+		if( vexRT[ Btn8RXmtr2 ] == 1 )
+			FwVelocitySet( 100, 0.47 );
+		if( vexRT[ Btn8DXmtr2 ] == 1 ){
+			FwVelocitySet( 00, 0 );
+			AutoIndex = 0;
+			AutoIntake = 0;
+		}
 
 		//////// DRIVE ////////
 		if(abs(vexRT[Ch3]) > 10 || abs(vexRT[Ch4]) > 10 ||
