@@ -37,15 +37,21 @@ task autonomous()
 {
 	startTask( pid );
 	targetRPM = full;
-	wait1Msec(4000);
+
+	while(currentRPM < targetRPM){}
+
 	motor[Intake] = 127;
-	motor[Index]   = 127;
-	wait1Msec(4000);
-	motor[Intake] = 0;
-	motor[Index]   = 0;
-	wait1Msec(4000);
-	motor[Intake] = 127;
-	motor[Index]   = 127;
+
+	motor[Index] = 127;
+	wait1Msec(1000);
+	motor[Index] = 0;
+	wait1Msec(1000);
+
+	motor[Index] = 127;
+	wait1Msec(1000);
+	motor[Index] = 0;
+	wait1Msec(1000);
+
 
 }
 
