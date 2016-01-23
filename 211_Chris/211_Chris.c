@@ -42,16 +42,21 @@ void pre_auton()
 
 task autonomous()
 {
-	// .....................................................................................
-	// Insert user code here.
-	// .....................................................................................
+	//FwVelocitySet( 115, 0.47 );
+	//motor[LeftDrive1]  = -100;
+	//motor[RightDrive1]  = -100;
+	//motor[LeftDrive2]  = -100;
+//	motor[RightDrive2]  = -100;
+	//wait1Msec(500);
+	//motor[Intake] = 127;
+	//motor[Index]   = 127;
 
 	AutonomousCodePlaceholderForTesting();  // Remove this function call once you have "real" code.
 }
 
 task usercontrol()
 {
-// Start the flywheel control task
+	// Start the flywheel control task
 	startTask( FwControlTask );
 
 	bool IntakeButton = false;
@@ -65,11 +70,11 @@ task usercontrol()
 	{
 		// Different speeds set by buttons
 		if( vexRT[ Btn8R ] == 1 )
-			FwVelocitySet( 170, 0.47 );
+			FwVelocitySet( 135, 0.47 ); // Full court
 		if( vexRT[ Btn8U ] == 1 )
-			FwVelocitySet( 100, 0.47 );
+			FwVelocitySet( 115, 0.47 );
 		if( vexRT[ Btn8L ] == 1 )
-			FwVelocitySet( 128, 0.39 ); // Full court
+			FwVelocitySet( 100, 0.39 );
 		if( vexRT[ Btn8D ] == 1 ){
 			FwVelocitySet( 00, 0 );
 			AutoIndex = 0;
@@ -113,10 +118,10 @@ task usercontrol()
 			if (IntakeSpeed == -127){
 				IntakeSpeed = 0;
 			}
-	}
+		}
 
-	/////////// Pneumatics ////////////
-	if(vexRT[Btn7L] == 1){
+		/////////// Pneumatics ////////////
+		if(vexRT[Btn7L] == 1){
 			SensorValue[IntakePn] = 1;
 		}
 		else {
@@ -144,11 +149,11 @@ task usercontrol()
 
 		///////////// AUTO FEED CODE /////////////////
 		//if (vexRT[Btn7U] == 1){
-			//AutoIndex = 127;
-			//AutoIntake = 127;
-		}//AutoFeed
+		//AutoIndex = 127;
+		//AutoIntake = 127;
+	}//AutoFeed
 
-		// Don't hog the cpu :)
-		wait1Msec(10);
+	// Don't hog the cpu :)
+	wait1Msec(10);
 	//}
 }

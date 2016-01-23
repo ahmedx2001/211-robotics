@@ -35,7 +35,17 @@ void pre_auton()
 
 task autonomous()
 {
-	AutonomousCodePlaceholderForTesting();  // Remove this function call once you have "real" code.
+	FwVelocitySet( 128, 0.39 );
+	wait1Msec(4000);
+	motor[Intake] = 127;
+	motor[Index]   = 127;
+	wait1Msec(4000);
+	motor[Intake] = 0;
+	motor[Index]   = 0;
+	wait1Msec(4000);
+	motor[Intake] = 127;
+	motor[Index]   = 127;
+
 }
 
 task usercontrol()
