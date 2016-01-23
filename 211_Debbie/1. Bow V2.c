@@ -44,6 +44,7 @@ task autonomous()
 		//AUTO SKILLS
 	case 1:
 		// Skills
+		RedSkills();
 		break;
 
 		// AUTO ROUTINES
@@ -52,9 +53,13 @@ task autonomous()
 		Balls(3500);
 		break;
 	case 3:
+		// Block
+		Park();
+		break;
+	case 4:
 		// FrontL
 		FrontL();
-	case 4:
+	case 5:
 		// FrontL
 		FrontR();
 	case 19:
