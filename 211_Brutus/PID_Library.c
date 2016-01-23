@@ -11,14 +11,14 @@ shooter( int value )
 }
 
 
-const int full = 3400;
-const int half = 2500;
+const int full = 3100;
+const int half = 2300;
 
 //++++++++++++++++++++PID Stuff++++++++++++++++++++
 const bool debug = false;
 
 //pid values
-const float pVal = 0.8;
+const float pVal = 1;
 //float iVal = 0;
 //float dVal = 0;
 
