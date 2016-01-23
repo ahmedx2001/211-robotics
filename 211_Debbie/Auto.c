@@ -69,12 +69,12 @@ void FrontL(){
 	// Shoot pre loads while shooting
 	BaseSpeed(100, 100);
 	wait1Msec(40);
-	BaseSpeed(30, 30);
+	BaseSpeed(40, 40);
 	motor[Intake] = 127;
 	wait1Msec(50);
 	Bow(127);
 	while(SensorValue(RightDrive) < 500){
-		BaseSpeed(26, 26);
+		BaseSpeed(30, 30);
 	}
 	BaseSpeed(0, 0);
 	Bow(0);
@@ -88,17 +88,15 @@ void FrontL(){
 	//Fix tension
 	startTask(AutoTensionFront);
 	//Aim at stack
-	TurnLeft(335);
+	TurnLeft(355);
 	// Intake stack
 	motor[Intake] = 127;
-	Drive(11);
+	Drive(13);
 	DriveBACK(2);
-	while(SensorValue(RightDrive) < 350){
-		BaseSpeed(60, 60);
-	}
+	Drive(16);
 	wait1Msec(400);
 	// Shoot stack
-	TurnRight(460);
+	TurnRight(420);
 	Bow(110);
 	wait1Msec(4000);
 	Bow(0);

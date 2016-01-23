@@ -69,7 +69,7 @@ task autonomous()
 	default:
 		//NOTHING
 	}
-	stopTask(autonomous);
+	wait1Msec(100000);
 }
 
 
