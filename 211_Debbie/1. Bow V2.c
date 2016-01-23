@@ -29,7 +29,8 @@
 /// Defult Auto ///
 int AutoSelect = 2;
 
-
+/// Half Court ///
+int HalfCourt = 555;
 
 
 #include "GyroLib.c"

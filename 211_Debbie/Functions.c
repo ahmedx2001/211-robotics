@@ -319,7 +319,7 @@ task AutoTensionFront(){
 ////// Set the tension to values while driving //////
 task TensionButtons()
 {
-	int DT = 720;  // wants 625
+	int DT = HalfCourt;  // wants 625
 	while(true)
 	{
 		/////// TENSION ///////
