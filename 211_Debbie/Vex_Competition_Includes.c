@@ -30,6 +30,8 @@ task main()
 		// AUTONOMOUS
 		if (bIfiAutonomousMode)
 		{
+			stopTask(TensionButtons);
+			stopTask(usercontrol);
 			startTask(autonomous);
 
 			// Waiting for autonomous phase to end
@@ -47,12 +49,16 @@ task main()
 		// DISABLED
 		else if (bIfiRobotDisabled)
 		{
+			stopTask(autonomous);
 			stopTask(TensionButtons);
+			stopTask(usercontrol);
 			SensorValue(BaseLock) = 0;
 		}
 		// DRIVER CONTROL
 		else
 		{
+			stopTask(autonomous);
+			startTask(TensionButtons);
 			startTask(usercontrol);
 
 			// Here we repeat loop waiting for user control to end and (optionally) start

@@ -68,9 +68,10 @@ void FrontL(){
 	SensorValue(RightDrive) = 0;
 	// Shoot pre loads while shooting
 	BaseSpeed(100, 100);
-	wait1Msec(20);
+	wait1Msec(40);
 	BaseSpeed(30, 30);
 	motor[Intake] = 127;
+	wait1Msec(50);
 	Bow(127);
 	while(SensorValue(RightDrive) < 500){
 		BaseSpeed(26, 26);

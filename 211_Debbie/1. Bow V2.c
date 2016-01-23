@@ -4,8 +4,8 @@
 #pragma config(Sensor, dgtl3,  Ramps,          sensorDigitalOut)
 #pragma config(Sensor, dgtl4,  LiftLeft,       sensorDigitalOut)
 #pragma config(Sensor, dgtl5,  LiftRight,      sensorDigitalOut)
-#pragma config(Sensor, dgtl6,  LeftDrive,      sensorQuadEncoder)
-#pragma config(Sensor, dgtl8,  RightDrive,     sensorQuadEncoder)
+#pragma config(Sensor, dgtl6,  RightDrive,     sensorQuadEncoder)
+#pragma config(Sensor, dgtl8,  LeftDrive,      sensorQuadEncoder)
 #pragma config(Sensor, dgtl10, BaseLock,       sensorDigitalOut)
 #pragma config(Sensor, dgtl11, LED,            sensorDigitalOut)
 #pragma config(Motor,  port1,           Tension,       tmotorVex393_HBridge, openLoop)
@@ -53,13 +53,9 @@ task autonomous()
 		Balls(3500);
 		break;
 	case 3:
-		// Block
-		Park();
-		break;
-	case 4:
 		// FrontL
 		FrontL();
-	case 5:
+	case 4:
 		// FrontL
 		FrontR();
 	case 19:
@@ -73,6 +69,7 @@ task autonomous()
 	default:
 		//NOTHING
 	}
+	stopTask(autonomous);
 }
 
 

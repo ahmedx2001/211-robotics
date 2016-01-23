@@ -443,12 +443,9 @@ task LCD() {
 				AutoName = "BALL AUTO";
 				break;
 			case 3:
-				AutoName = "Park AUTO";
-				break;
-			case 4:
 				AutoName = "FrontL";
 				break;
-			case 5:
+			case 4:
 				AutoName = "FrontR";
 				break;
 
