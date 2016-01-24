@@ -99,8 +99,8 @@ FwCalculateSpeed()
 	encoder_counts_last = encoder_counts;
 
 	// Calculate velocity in rpm
-	if (delta_enc != 0){
-	motor_velocity = (1000.0 / delta_ms) * delta_enc * 60.0 / ticks_per_rev;
+	if (delta_enc != 0 && delta_ms != 0 && ticks_per_rev != 0){
+	motor_velocity = (1000.0 / delta_ms) * -delta_enc * 60.0 / ticks_per_rev;
 }
 }
 

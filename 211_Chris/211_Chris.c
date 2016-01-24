@@ -26,7 +26,7 @@
 
 #include "Vex_Competition_Includes.c"   //Main competition background code...do not modify!
 
-#include "TBH_Library.c"
+#include "TBH_Library_Nick.c"
 
 
 void pre_auton()
@@ -41,11 +41,8 @@ void pre_auton()
 
 task autonomous()
 {
-	//FwVelocitySet( 115, 0.47 );
-	//motor[LeftDrive1]  = -100;
-	//motor[RightDrive1]  = -100;
-	//motor[LeftDrive2]  = -100;
-//	motor[RightDrive2]  = -100;
+	//startTask( FwControlTask );
+	//FwVelocitySet( 150, 0.47 );
 	//wait1Msec(500);
 	//motor[Intake] = 127;
 	//motor[Index]   = 127;
@@ -69,15 +66,17 @@ task usercontrol()
 	{
 		// Different speeds set by buttons
 		if( vexRT[ Btn8R ] == 1 )
-			FwVelocitySet( 160, 0.99 ); // Full court
+				//startTask( FwControlTask );
+			FwVelocitySet( 170, 0.99 ); // Full court
 		if( vexRT[ Btn8U ] == 1 )
-			FwVelocitySet( 130, 0.47 );
+				//startTask( FwControlTask );
+			FwVelocitySet( 125, 0.47 );
 		if( vexRT[ Btn8L ] == 1 )
-			FwVelocitySet( 115, 0.39 );
+				//startTask( FwControlTask );
+			FwVelocitySet( 105, 0.39 );
 		if( vexRT[ Btn7L ] == 1 ){
+			//stopTask(FwControlTask);
 			FwVelocitySet( 00, 0 );
-			AutoIndex = 0;
-			AutoIntake = 0;
 		}
 
 		//////// DRIVE ////////
