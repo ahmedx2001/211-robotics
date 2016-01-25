@@ -18,7 +18,7 @@ const int half = 2300;
 const bool debug = false;
 
 //pid values
-const float pVal = 1;
+const float pVal = 0.7;
 //float iVal = 0;
 //float dVal = 0;
 

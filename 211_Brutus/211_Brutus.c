@@ -33,49 +33,41 @@ void pre_auton()
 	bStopTasksBetweenModes = true;
 }
 
-task autonomous()
-{
+task auto(){
 	startTask( pid );
 	targetRPM = full;
 
-	while(currentRPM < targetRPM){}
+	wait1Msec(2500);
 
-	motor[Intake] = 127;
+	while(true){
+		motor[Index] = 127;
+		motor[Intake] = 127;
+		wait1Msec(400);
+		motor[Index] = 0;
+		motor[Intake] = 0;
+		wait1Msec(1000);
+	}
+}
 
-	motor[Index] = 127;
-	wait1Msec(1000);
-	motor[Index] = 0;
-	wait1Msec(1000);
-
-	motor[Index] = 127;
-	wait1Msec(1000);
-	motor[Index] = 0;
-	wait1Msec(1000);
-
-
+task autonomous()
+{
+	startTask(auto);
 }
 
 task usercontrol()
 {
 	// Start the flywheel control task
 	startTask( pid );
-
-	bool IntakeButton = false;
-	int IntakeSpeed = 0;
-	int AutoIndex = 0;
-	int AutoIntake = 0;
-
+	targetRPM = 0;
 
 	// Main user control loop
 	while(1)
 	{
-
-
+		/////////SHOOTER/////////
 		if (vexRT[Btn8UXmtr2]) targetRPM = full;
 		else if (vexRT[Btn8LXmtr2])targetRPM = 1000;
 		else if (vexRT[Btn8RXmtr2])targetRPM = half;
 		else if (vexRT[Btn8DXmtr2])targetRPM = 0;
-
 
 		if (vexRT[Btn6UXmtr2]) shooter(vexRT[Ch2Xmtr2]);
 
@@ -95,56 +87,14 @@ task usercontrol()
 		else if(vexRT[Btn6D])motor[Intake]=-127;
 		else motor[Intake]=0;
 
-
-		//motor[Intake] = IntakeSpeed+AutoIntake;
-		//if(vexRT[Btn6U] == 1){
-		//	IntakeSpeed = 127;
-		//}
-		//else if(vexRT[Btn6D] == 1){
-		//	if (IntakeSpeed == 127){
-		//		IntakeButton = true;
-		//		AutoIntake = 0;
-		//		IntakeSpeed = 0;
-		//	}
-		//	else {
-		//		if (IntakeButton == false){
-		//			IntakeSpeed = -127;
-		//		}
-		//	}
-		//}
-		//else{
-		//	IntakeButton = false;
-		//	if (IntakeSpeed == -127){
-		//		IntakeSpeed = 0;
-		//	}
-		//}
-
 		///////// INDEXER ////////
-
-
 		if(vexRT[Btn5UXmtr2]) motor[Index] = 127;
 		else if(vexRT[Btn5DXmtr2]) motor[Index] = -127;
 		else motor[Index] = 0;
-		//if(vexRT[Btn5UXmtr2] == 1){
-		//	motor[Index]   = 127;
-		//}
-		//else if(vexRT[Btn5DXmtr2] == 1){
-		//	motor[Index] = -127;
-		//	AutoIndex = 0;
-		//}
-		//else {
-		//	motor[Index] = AutoIndex;
-		//}
 
-		/////////////// AUTO FEED CODE /////////////////
-		//if (vexRT[Btn7U] == 1){
-		//	AutoIndex = 127;
-		//	AutoIntake = 127;
-		//}//AutoFeed
-		//if(vexRT[Btn7D] == 1){
-		//	AutoIndex = 0;
-		//	AutoIntake = 0;
-		//}
+		////////AUTOFEED/////////
+		if (vexRT[Btn7UXmtr2]) startTask(auto);
+		else if(vexRT[Btn7DXmtr2]) stopTask(auto);
 
 		// Don't hog the cpu :)
 		wait1Msec(10);
