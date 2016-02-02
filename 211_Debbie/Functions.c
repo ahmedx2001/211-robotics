@@ -367,7 +367,7 @@ task TensionButtons()
 		else {
 			motor[Tension]   = 0;
 		}
-
+		wait1Msec(10);
 
 	}
 }

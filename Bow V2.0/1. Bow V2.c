@@ -4,8 +4,8 @@
 #pragma config(Sensor, dgtl3,  Ramps,          sensorDigitalOut)
 #pragma config(Sensor, dgtl4,  LiftLeft,       sensorDigitalOut)
 #pragma config(Sensor, dgtl5,  LiftRight,      sensorDigitalOut)
-#pragma config(Sensor, dgtl6,  RightDrive,     sensorQuadEncoder)
-#pragma config(Sensor, dgtl8,  LeftDrive,      sensorQuadEncoder)
+#pragma config(Sensor, dgtl6,  LeftDrive,      sensorQuadEncoder)
+#pragma config(Sensor, dgtl8,  RightDrive,     sensorQuadEncoder)
 #pragma config(Sensor, dgtl10, BaseLock,       sensorDigitalOut)
 #pragma config(Sensor, dgtl11, LED,            sensorDigitalOut)
 #pragma config(Motor,  port1,           Tension,       tmotorVex393_HBridge, openLoop)
@@ -26,15 +26,15 @@
 #pragma autonomousDuration(20)
 #pragma userControlDuration(120)
 
-/// Defult Auto ///
+
+// Defult Autonomous
 int AutoSelect = 2;
 
-/// Half Court ///
-int HalfCourt = 555;
 
-
+#include "GlobalVariables.c"
 #include "GyroLib.c"
 #include "Functions.c"
+#include "PositionTrackingLibrary.c"
 #include "Auto.c"
 #include "Vex_Competition_Includes.c"
 
@@ -45,20 +45,12 @@ task autonomous()
 		//AUTO SKILLS
 	case 1:
 		// Skills
-		RedSkills();
 		break;
-
 		// AUTO ROUTINES
 	case 2:
 		//BALL AUTO
 		Balls(3500);
 		break;
-	case 3:
-		// FrontL
-		FrontL();
-	case 4:
-		// FrontL
-		FrontR();
 	case 19:
 		// LEFT TEST
 		LeftTest();
@@ -70,7 +62,6 @@ task autonomous()
 	default:
 		//NOTHING
 	}
-	wait1Msec(100000);
 }
 
 
@@ -81,8 +72,6 @@ task usercontrol()
 	bool justPressed = false;
 	bool isOn2 = false;
 	bool justPressed2 = false;
-	bool LowerTension = false;
-	bool RaiseTension = false;
 	int IntakeCycles = 0;
 	int LeftDrive = 0;
 	int RightDrive = 0;
@@ -178,130 +167,5 @@ task usercontrol()
 			SensorValue(LiftLeft) = 0;
 			SensorValue(LiftRight) = 0;
 		}
-
-		///////// TENSION BUTTONS ////////
-		// Zero Tension
-		if(vexRT[Btn8U] == 1 && vexRT[Btn8R] == 1){
-			motor[Tension] = 0;
-			wait1Msec(1000);
-			if(vexRT[Btn8U] == 1 && vexRT[Btn8R] == 1){
-				SensorValue(TensionEncoder) = 0;
-			}
-		}
-		// Manual Tension
-		if(vexRT[Btn8R] == 1){
-			motor[Tension]   = 100; //UP
-			RaiseTension = false;
-			LowerTension = false;
-		}
-		else if(vexRT[Btn8L] == 1){
-			motor[Tension]   = -80; //DOWN
-			RaiseTension = false;
-			LowerTension = false;
-		}
-
-		// Auto Tension buttons
-		else if(vexRT[Btn8U] == 1){
-			// Lower tension
-			RaiseTension = true;
-		}
-		else if(vexRT[Btn8D] == 1){
-			// Lower tension
-			LowerTension = true;
-		}
-
-		///// AUTO TENSION /////
-		if (RaiseTension == true){
-			if (SensorValue(TensionEncoder) > 20){
-				motor[Tension] = 127;
-			}
-			//Was above full court
-			else if (SensorValue(TensionEncoder) < -20) {
-				motor[Tension] = -80;
-			}
-			else {
-				RaiseTension = false;
-			}
-		}
-		else if(LowerTension == true){
-			if (SensorValue(TensionEncoder) > HalfCourt - ){
-				motor[Tension] = 127;
-			}
-			//Was above full court
-			else if (SensorValue(TensionEncoder) < -20) {
-				motor[Tension] = -80;
-			}
-			else {
-				RaiseTension = false;
-			}
-		}
-
-
-		while(SensorValue(TensionEncoder) > 0 && vexRT[Btn8R] == 0){
-			motor[Tension] = 127;
-		}
 	}
-
-
-
-}
-}
-
-
-
-
-////// Set the tension to values while driving //////
-task TensionButtons()
-{
-int DT = HalfCourt;  // wants 625
-while(true)
-{
-	/////// TENSION ///////
-	if(vexRT[Btn8U] == 1 && vexRT[Btn8R] == 1){
-		motor[Tension] = 0;
-		wait1Msec(1000);
-		if(vexRT[Btn8U] == 1 && vexRT[Btn8R] == 1){
-			SensorValue(TensionEncoder) = 0;
-		}
-	}
-	if(vexRT[Btn8R] == 1){
-		motor[Tension]   = 100;
-	}
-	else if(vexRT[Btn8L] == 1){
-		motor[Tension]   = -80;
-	}
-
-	else if(vexRT[Btn8U] == 1){
-		while(-SensorValue(TensionEncoder) > 0 && vexRT[Btn8R] == 0){
-			motor[Tension] = 127;
-		}
-	}
-
-	else if(vexRT[Btn8D] == 1){
-		if (-SensorValue(TensionEncoder) < 15){
-			while(-SensorValue(TensionEncoder) < (DT - 20) && vexRT[Btn8R] == 0){
-				motor[Tension] = -127;
-			}
-		}
-		else if (-SensorValue(TensionEncoder) > (DT - 240) && -SensorValue(TensionEncoder) < (DT + 120)){
-			motor[Tension] = -100;
-			wait1Msec(1000);
-			motor[Tension] = 0;
-		}
-		else if (-SensorValue(TensionEncoder) > (DT + 80)){
-			while(-SensorValue(TensionEncoder) >  (DT + 5) && vexRT[Btn8R] == 0){
-				motor[Tension] = 127;
-			}
-		}
-		else {
-			motor[Tension]   = 0;
-		}
-	}
-
-	else {
-		motor[Tension]   = 0;
-	}
-	wait1Msec(10);
-
-}
 }
