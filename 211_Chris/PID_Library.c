@@ -3,34 +3,36 @@ shooter( int value )
 {
 	motor[TLShooter] = value;
 	motor[TRShooter] = value;
+
 	motor[MLShooter] = value;
 	motor[MRShooter] = value;
+
 	motor[BLShooter] = value;
 	motor[BRShooter] = value;
 
 }
 
 
-const int full = 3100;
+const int full = 3350;
 const int half = 2300;
 
 //++++++++++++++++++++PID Stuff++++++++++++++++++++
-const bool debug = false;
+const bool debug = true;
 
 //pid values
 const float pVal = 0.7;
-//float iVal = 0;
-//float dVal = 0;
+const float iVal = 0.003;
+const float dVal = 0.6;
 
 //PID variables
 int error = 0;
-//int sumError = 0;
-//int slope = 0;
-//int lastError = 0;
+int sumError = 0;
+int slope = 0;
+int lastError = 0;
 
 int pChange = 0;
-//int iChange = 0;
-//int dChange = 0;
+int iChange = 0;
+int dChange = 0;
 int tChange = 0;
 
 //RPM Calculation Variables
@@ -56,46 +58,31 @@ task pid(){											//PID task
 			//get error
 			error = targetRPM - currentRPM;
 			if (debug) writeDebugStreamLine("Error: %d", error);
-			//sumError = sumError + error;
+			sumError = sumError + error;
 
 			//p calculations
 			pChange = error * pVal;
-			if (debug) writeDebugStreamLine("P Change: %d\n", pChange);
+			if (debug) writeDebugStreamLine("P Change: %d", pChange);
 
 			//i calculations
-			//iChange = sumError * iVal;
+			iChange = sumError * iVal;
+			if (debug) writeDebugStreamLine("I Change: %d", iChange);
 
 			//d calculations
-			//slope = error - lastError;
-			//dChange = slope * dVal;
+			slope = error - lastError;
+			dChange = slope * dVal;
+			if (debug) writeDebugStreamLine("D Change: %d", dChange);
 
 			//total pid changes
-			tChange = pChange; //+ iChange + dChange;
+			tChange = pChange + iChange + dChange;
+			if (debug) writeDebugStreamLine("Total Change: %d\n", tChange);
 
 			//make sure motor doesnt run backwards
 			if(tChange<0) tChange = 0;
 
 			shooter(tChange);
 
-			//if(currentRPM >= targetRPM){
-			//	SensorValue[ledSpeed] = 0;
-			//	}else{
-			//	SensorValue[ledSpeed] = 1;
-			//}
-
-			//if (targetRPM == full){
-			//	SensorValue[ledFull] = 0;
-			//	SensorValue[ledHalf] = 1;
-			//	}else if(targetRPM == half){
-			//	SensorValue[ledFull] = 1;
-			//	SensorValue[ledHalf] = 0;
-			//	}else{
-			//	SensorValue[ledFull] = 1;
-			//	SensorValue[ledHalf] = 1;
-			//}
-
-
-			//lastError = error;
+			lastError = error;
 			lastVal = val;
 			wait1Msec(10);
 		}
