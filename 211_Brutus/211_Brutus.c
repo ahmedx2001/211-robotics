@@ -1,7 +1,7 @@
 #pragma config(Sensor, in1,    TurnGyro,       sensorGyro)
-#pragma config(Sensor, dgtl1,  ledSpeed,       sensorDigitalOut)
-#pragma config(Sensor, dgtl2,  ledFull,        sensorDigitalOut)
-#pragma config(Sensor, dgtl3,  ledHalf,        sensorDigitalOut)
+#pragma config(Sensor, dgtl1,  ledSpeed,       sensorDigitalIn)
+#pragma config(Sensor, dgtl2,  ledFull,        sensorDigitalIn)
+#pragma config(Sensor, dgtl3,  ledHalf,        sensorDigitalIn)
 #pragma config(Sensor, dgtl7,  LeftEncoder,    sensorQuadEncoder)
 #pragma config(Sensor, dgtl9,  RightEncoder,   sensorQuadEncoder)
 #pragma config(Sensor, dgtl11, ShooterEncoder, sensorQuadEncoder)
@@ -90,6 +90,24 @@ task usercontrol()
 
 		////////AUTOFEED/////////
 
+		///////////LED///////////
+			if (vexRT[Btn8UXmtr2]){
+				if (currentRPM >= targetRPM)
+					SensorValue[ledSpeed]=1;
+				else if (currentRPM == 0)
+					SensorValue[ledSpeed]=0;
+				else
+					SensorValue[ledSpeed]=0;
+			}
+
+			//speed leds
+			if (targetRPM == full)
+				SensorValue[ledFull]=1;
+			else if(targetRPM == half)
+				SensorValue[ledHalf]=1;
+			else
+				SensorValue[ledFull]=0;
+				SensorValue[ledHalf]=0;
 
 
 		// Don't hog the cpu :)
