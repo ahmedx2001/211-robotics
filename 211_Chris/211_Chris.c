@@ -1,14 +1,10 @@
-#pragma config(Sensor, in1,    TurnGyro,       sensorGyro)
-#pragma config(Sensor, dgtl1,  IntakePn,       sensorDigitalOut)
-#pragma config(Sensor, dgtl2,  BrakePn1,       sensorDigitalOut)
-#pragma config(Sensor, dgtl3,  BrakePn2,       sensorDigitalOut)
 #pragma config(Sensor, dgtl7,  LeftEncoder,    sensorQuadEncoder)
 #pragma config(Sensor, dgtl9,  RightEncoder,   sensorQuadEncoder)
 #pragma config(Sensor, dgtl11, ShooterEncoder, sensorQuadEncoder)
 #pragma config(Motor,  port1,           BLShooter,     tmotorVex393HighSpeed_HBridge, openLoop)
 #pragma config(Motor,  port2,           LeftDrive,     tmotorVex393TurboSpeed_MC29, openLoop)
 #pragma config(Motor,  port3,           RightDrive,    tmotorVex393TurboSpeed_MC29, openLoop, reversed)
-#pragma config(Motor,  port4,           Index,         tmotorVex393HighSpeed_MC29, openLoop)
+#pragma config(Motor,  port4,           Index,         tmotorVex393HighSpeed_MC29, openLoop, reversed)
 #pragma config(Motor,  port5,           Intake,        tmotorVex393HighSpeed_MC29, openLoop)
 #pragma config(Motor,  port6,           MLShooter,     tmotorVex393HighSpeed_MC29, openLoop, reversed)
 #pragma config(Motor,  port7,           MRShooter,     tmotorVex393HighSpeed_MC29, openLoop)
@@ -82,55 +78,16 @@ task usercontrol()
 		}
 
 		/////// INTAKE ////////
-		motor[Intake] = IntakeSpeed+AutoIntake;
-		if(vexRT[Btn6U] == 1){
-			IntakeSpeed = 127;
-		}
-		else if(vexRT[Btn6D] == 1){
-			if (IntakeSpeed == 127){
-				IntakeButton = true;
-				AutoIntake = 0;
-				IntakeSpeed = 0;
-			}
-			else {
-				if (IntakeButton == false){
-					IntakeSpeed = -127;
-				}
-			}
-		}
-		else{
-			IntakeButton = false;
-			if (IntakeSpeed == -127){
-				IntakeSpeed = 0;
-			}
-		}
 
-		/////////// Pneumatics ////////////
-		if(vexRT[Btn7L] == 1){
-			SensorValue[IntakePn] = 1;
-		}
-		else {
-			SensorValue[IntakePn] = 0;
-		}
+		if(vexRT[Btn6U]) motor[Index] = 127;
+		else if(vexRT[Btn6D]) motor[Index] = -127;
+		else motor[Index] = 0;
 
-		if(vexRT[Btn7R] == 1) {
-			SensorValue[BrakePn1] = 1;
-		}
-		else {
-			SensorValue[BrakePn1] = 0;
-		}
 
 		/////// INDEXER ////////
-		if(vexRT[Btn5U] == 1){
-			motor[Index]   = 127;
-		}
-		else if(vexRT[Btn5D] == 1){
-			motor[Index] = -127;
-			AutoIntake = 0;
-		}
-		else {
-			motor[Index] = AutoIndex;
-		}
+		if(vexRT[Btn5U]) motor[Intake] = 127;
+		else if(vexRT[Btn5D]) motor[Intake] = -127;
+		else motor[Intake] = 0;
 
 		///////////// AUTO FEED CODE /////////////////
 		//if (vexRT[Btn7U] == 1){
