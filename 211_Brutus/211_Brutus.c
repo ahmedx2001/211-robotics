@@ -33,7 +33,8 @@ void pre_auton()
 	bStopTasksBetweenModes = true;
 }
 
-task auto(){
+task autonomous()
+{
 	startTask( pid );
 	targetRPM = full;
 
@@ -47,11 +48,6 @@ task auto(){
 		motor[Intake] = 0;
 		wait1Msec(1000);
 	}
-}
-
-task autonomous()
-{
-	startTask(auto);
 }
 
 task usercontrol()
@@ -93,8 +89,8 @@ task usercontrol()
 		else motor[Index] = 0;
 
 		////////AUTOFEED/////////
-		if (vexRT[Btn7UXmtr2]) startTask(auto);
-		else if(vexRT[Btn7DXmtr2]) stopTask(auto);
+
+
 
 		// Don't hog the cpu :)
 		wait1Msec(10);
