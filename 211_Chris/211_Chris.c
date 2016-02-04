@@ -51,12 +51,6 @@ task usercontrol()
 	// Start the flywheel control task
 	startTask( pid );
 
-	bool IntakeButton = false;
-	int IntakeSpeed = 0;
-	int AutoIndex = 0;
-	int AutoIntake = 0;
-
-
 	// Main user control loop
 	while(1)
 	{
@@ -79,21 +73,17 @@ task usercontrol()
 
 		/////// INTAKE ////////
 
-		if(vexRT[Btn6U]) motor[Index] = 127;
-		else if(vexRT[Btn6D]) motor[Index] = -127;
+		if(vexRT[Btn5U]) motor[Index] = 127;
+		else if(vexRT[Btn5D]) motor[Index] = -127;
 		else motor[Index] = 0;
 
 
 		/////// INDEXER ////////
-		if(vexRT[Btn5U]) motor[Intake] = 127;
-		else if(vexRT[Btn5D]) motor[Intake] = -127;
+		if(vexRT[Btn6U]) motor[Intake] = 127;
+		else if(vexRT[Btn6D]) motor[Intake] = -127;
 		else motor[Intake] = 0;
 
-		///////////// AUTO FEED CODE /////////////////
-		//if (vexRT[Btn7U] == 1){
-		//AutoIndex = 127;
-		//AutoIntake = 127;
-	}//AutoFeed
+	}
 
 	// Don't hog the cpu :)
 	wait1Msec(10);

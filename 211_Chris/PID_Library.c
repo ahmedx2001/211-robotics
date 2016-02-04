@@ -16,7 +16,6 @@ shooter( int value )
 const int full = 3350;
 const int half = 2300;
 
-//++++++++++++++++++++PID Stuff++++++++++++++++++++
 const bool debug = true;
 
 //pid values
@@ -30,10 +29,10 @@ int sumError = 0;
 int slope = 0;
 int lastError = 0;
 
-int pChange = 0;
-int iChange = 0;
-int dChange = 0;
-int tChange = 0;
+int pChange = 0; //P Change
+int iChange = 0; //I Change
+int dChange = 0; //D Change
+int tChange = 0; //Total Change
 
 //RPM Calculation Variables
 int targetRPM = 0;
@@ -73,13 +72,14 @@ task pid(){											//PID task
 			dChange = slope * dVal;
 			if (debug) writeDebugStreamLine("D Change: %d", dChange);
 
-			//total pid changes
+			//Total pid changes
 			tChange = pChange + iChange + dChange;
 			if (debug) writeDebugStreamLine("Total Change: %d\n", tChange);
 
-			//make sure motor doesnt run backwards
+			//Make sure motors doesnt run back words
 			if(tChange<0) tChange = 0;
 
+			//Update Motor
 			shooter(tChange);
 
 			lastError = error;
@@ -88,7 +88,3 @@ task pid(){											//PID task
 		}
 	}//while loop
 }//task
-
-
-
-//---------------------End PID---------------------
