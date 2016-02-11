@@ -85,7 +85,7 @@ task pid(){											//PID task
 			datalogDataGroupEnd();
 
 
-			//Make sure motors doesnt run back words
+			//Make sure motors doesnt run backwards
 			if(tChange<0) tChange = 0;
 
 			//Update Motor

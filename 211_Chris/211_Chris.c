@@ -49,7 +49,7 @@ task autonomous()
 task usercontrol()
 {
 	// Start the flywheel control task
-	startTask( pid );
+	startTask(pid);
 
 	// Main user control loop
 	while(1)
