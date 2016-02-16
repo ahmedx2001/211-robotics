@@ -1,6 +1,4 @@
-void
-shooter( int value )
-{
+void shooter(int value){
 	motor[ LeftShooter1 ] = abs(value);
 	motor[ LeftShooter2 ] = abs(value);
 	motor[ LeftShooter3 ] = abs(value);
@@ -10,6 +8,7 @@ shooter( int value )
 	motor[ RightShooter3 ] = abs(value);
 }
 
+float map(float ival, float imin, float imax, float omin, float omax){return (omax-omin) * (ival-imin)/(imax-imin) + omin;}
 
 const int full = 3100;
 const int half = 2300;
@@ -18,7 +17,7 @@ const int half = 2300;
 const bool debug = false;
 
 //pid values
-const float pVal = 0.7;
+float pVal = 0.7;
 float iVal = 0;
 float dVal = 0;
 
@@ -48,6 +47,17 @@ task pid(){											//PID task
 			diff = val - lastVal;
 			currentRPM = diff*100*60*25/360;
 			//-----------------End Current RPM ------------------
+
+			//++++++++++++++++++++PID Value++++++++++++++++++++
+			pVal = map(SensorValue[p],0,127,0,1);
+			iVal = map(SensorValue[i],0,127,0,1);
+			dVal = map(SensorValue[d],0,127,0,1);
+
+			if (debug) writeDebugStreamLine("P Value: %d", pVal);
+			if (debug) writeDebugStreamLine("I Value: %d", iVal);
+			if (debug) writeDebugStreamLine("D Value: %d", dVal);
+
+			//-----------------End PID Value ------------------
 
 			//write to debug stream
 			if (debug) writeDebugStreamLine("Current RPM: %d", currentRPM);

@@ -1,7 +1,10 @@
 #pragma config(Sensor, in1,    TurnGyro,       sensorGyro)
-#pragma config(Sensor, dgtl1,  ledSpeed,       sensorDigitalOut)
-#pragma config(Sensor, dgtl2,  ledFull,        sensorDigitalOut)
-#pragma config(Sensor, dgtl3,  ledHalf,        sensorDigitalOut)
+#pragma config(Sensor, in2,    p,              sensorAnalog)
+#pragma config(Sensor, in3,    i,              sensorAnalog)
+#pragma config(Sensor, in4,    d,              sensorAnalog)
+#pragma config(Sensor, dgtl1,  ledSpeed,       sensorDigitalIn)
+#pragma config(Sensor, dgtl2,  ledFull,        sensorDigitalIn)
+#pragma config(Sensor, dgtl3,  ledHalf,        sensorDigitalIn)
 #pragma config(Sensor, dgtl7,  LeftEncoder,    sensorQuadEncoder)
 #pragma config(Sensor, dgtl9,  RightEncoder,   sensorQuadEncoder)
 #pragma config(Sensor, dgtl11, ShooterEncoder, sensorQuadEncoder)
@@ -33,7 +36,8 @@ void pre_auton()
 	bStopTasksBetweenModes = true;
 }
 
-task auto(){
+task autonomous()
+{
 	startTask( pid );
 	targetRPM = full;
 
@@ -47,11 +51,6 @@ task auto(){
 		motor[Intake] = 0;
 		wait1Msec(1000);
 	}
-}
-
-task autonomous()
-{
-	startTask(auto);
 }
 
 task usercontrol()
@@ -91,10 +90,6 @@ task usercontrol()
 		if(vexRT[Btn5UXmtr2]) motor[Index] = 127;
 		else if(vexRT[Btn5DXmtr2]) motor[Index] = -127;
 		else motor[Index] = 0;
-
-		////////AUTOFEED/////////
-		if (vexRT[Btn7UXmtr2]) startTask(auto);
-		else if(vexRT[Btn7DXmtr2]) stopTask(auto);
 
 		// Don't hog the cpu :)
 		wait1Msec(10);
