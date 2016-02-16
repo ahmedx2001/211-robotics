@@ -398,18 +398,13 @@ task LCD() {
 			displayLCDString(1, 6, AutoName);
 		}
 		else{
-			//displayLCDNumber(1, 0, SensorValue(BowEncoder));
-			//displayLCDNumber(1, 0, SensorValue(RightEncoder));
-			//displayLCDNumber(1, 0, SensorValue(BowPot));
-			//displayLCDNumber(1, 0, GyroAngleDegGet());
-			//displayLCDNumber(1, 0, SmartMotorGetTemperature(Left1));
 			displayLCDNumber(1, 0, abs(SensorValue(TensionEncoder)));
 			displayLCDNumber(1, 4, AutoSelect);
 			displayLCDString(1, 6, AutoName);
 
 
 			if (nLCDButtons == 1){
-				wait1Msec(2000);
+				wait1Msec(1000);
 				if (nLCDButtons == 1){
 					SensorValue(TensionEncoder) = 0;
 				}

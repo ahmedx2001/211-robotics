@@ -1,0 +1,29 @@
+		////// BOW AND TEST //////
+		if (abs(vexRT[Ch2]) > 10){
+			BowTest = false;
+			BowDrive = (vexRT[Ch2]);
+		}
+		else if (vexRT(Btn7U)){
+			
+			motor[LeftBow2] = 127;
+		}
+		else if (vexRT(Btn7L)){
+			BowTest = true;
+			motor[LeftBow1] = 127;
+		}
+		else if (vexRT(Btn7R)){
+			BowTest = true;
+			motor[RightBow2] = 127;
+		}
+		else if (vexRT(Btn7D)){
+			BowTest = true;
+			motor[RightBow1] = 127;
+		}
+		else{
+			BowTest = false;
+			BowDrive = 0;
+		}
+
+		if (BowTest == false){
+			BowSpeed(BowDrive);
+		}
