@@ -33,8 +33,8 @@ task LCD() {
 		}
 		else{
 			displayLCDNumber(1, 0, abs(SensorValue(TensionEncoder)));
-			displayLCDNumber(1, 4, AutoSelect);
-			displayLCDString(1, 6, AutoName);
+			displayLCDNumber(1, 6, AutoSelect);
+			displayLCDString(1, 8, AutoName);
 
 
 			if (nLCDButtons == 1){
