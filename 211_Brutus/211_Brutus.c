@@ -28,6 +28,9 @@
 
 #include "PID_Library.c"
 
+int lastIntakeState = 0;
+int intakeSpeed = 0;
+
 void pre_auton()
 {
 	bStopTasksBetweenModes = true;
@@ -79,9 +82,21 @@ task usercontrol()
 		}
 
 		///////// INTAKE ////////
-		if(vexRT[Btn6U])motor[Intake]=127;
-		else if(vexRT[Btn6D])motor[Intake]=-127;
-		else motor[Intake]=0;
+
+		//Non-Latching
+		//if(vexRT[Btn6U])motor[Intake]=127;
+		//else if(vexRT[Btn6D])motor[Intake]=-127;
+		//else motor[Intake]=0;
+
+		//Latching
+		if (vexRT[Btn6U] && vexRT[Btn6U] != lastIntakeState){
+			if (intakeSpeed == 0 || intakeSpeed == -127) intakeSpeed = 127;
+			else if (intakeSpeed == 127) intakeSpeed = -127;
+		}else if (vexRT[Btn6D]) intakeSpeed = 0;
+
+		motor[Intake] = intakeSpeed;
+
+		lastIntakeState = vexRT[Btn6U];
 
 		///////// INDEXER ////////
 		if(vexRT[Btn5UXmtr2]) motor[Index] = 127;
