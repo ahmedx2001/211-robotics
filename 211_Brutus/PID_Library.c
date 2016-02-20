@@ -18,9 +18,9 @@ const int half = 2300;
 const bool debug = false;
 
 //pid values
-const float pVal = 0.7;
-float iVal = 0;
-float dVal = 0;
+const float pVal = 6;
+const float iVal = 0.0001;
+const float dVal = 9;
 
 //PID variables
 int error = 0;
@@ -54,7 +54,7 @@ task pid(){											//PID task
 			if (debug) writeDebugStreamLine("Tagrget RPM: %d", targetRPM);
 
 			//get error
-			error = targetRPM - currentRPM;
+			error = (targetRPM - currentRPM)/10;
 			if (debug) writeDebugStreamLine("Error: %d", error);
 			sumError = sumError + error;
 

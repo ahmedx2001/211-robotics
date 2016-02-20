@@ -14,7 +14,7 @@ const int full = 3100;
 const int half = 2300;
 
 //++++++++++++++++++++PID Stuff++++++++++++++++++++
-const bool debug = false;
+const bool debug = true;
 
 //pid values
 float pVal = 0.7;
@@ -49,13 +49,13 @@ task pid(){											//PID task
 			//-----------------End Current RPM ------------------
 
 			//++++++++++++++++++++PID Value++++++++++++++++++++
-			pVal = map(SensorValue[p],0,127,0,1);
-			iVal = map(SensorValue[i],0,127,0,1);
-			dVal = map(SensorValue[d],0,127,0,1);
+			pVal = map(SensorValue[p],0,4095,0,1);
+			iVal = map(SensorValue[i],0,4095,0,0.0001);
+			dVal = map(SensorValue[d],0,4095,0,1);
 
-			if (debug) writeDebugStreamLine("P Value: %d", pVal);
-			if (debug) writeDebugStreamLine("I Value: %d", iVal);
-			if (debug) writeDebugStreamLine("D Value: %d", dVal);
+			if (debug) writeDebugStreamLine("P Value: %f", pVal);
+			if (debug) writeDebugStreamLine("I Value: %f", iVal);
+			if (debug) writeDebugStreamLine("D Value: %f", dVal);
 
 			//-----------------End PID Value ------------------
 

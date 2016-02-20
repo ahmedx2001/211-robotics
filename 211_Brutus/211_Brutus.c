@@ -1,7 +1,4 @@
 #pragma config(Sensor, in1,    TurnGyro,       sensorGyro)
-#pragma config(Sensor, in2,    p,              sensorAnalog)
-#pragma config(Sensor, in3,    i,              sensorAnalog)
-#pragma config(Sensor, in4,    d,              sensorAnalog)
 #pragma config(Sensor, dgtl1,  ledSpeed,       sensorDigitalIn)
 #pragma config(Sensor, dgtl2,  ledFull,        sensorDigitalIn)
 #pragma config(Sensor, dgtl3,  ledHalf,        sensorDigitalIn)
