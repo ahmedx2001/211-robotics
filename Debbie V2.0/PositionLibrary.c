@@ -34,8 +34,8 @@ task PositionTrack(){
 		Heading = GyroAngleDegGet() + StartHeading;
 
 		// Calculate Distance traveled
-		LeftTot = (SensorValue(LeftEncoder) * 0.024);
-		RightTot = -(SensorValue(RightEncoder) * 0.024);
+		LeftTot = (SensorValue(LeftEncoder) * 0.035);
+		RightTot = (SensorValue(RightEncoder) * 0.035);
 		DistanceTot = (LeftTot + RightTot)/2;
 		Distance = DistanceTot - LastTot;
 		LastTot = DistanceTot;
@@ -45,11 +45,6 @@ task PositionTrack(){
 
 		Xpos += XChange;
 		Ypos += YChange;
-
-		displayLCDNumber(1, 0, Heading);
-		displayLCDNumber(1, 4, DistanceTot);
-		displayLCDNumber(1, 7, Ypos);
-		displayLCDNumber(1, 9, Ypos);
 
 		wait1Msec(10);
 	}

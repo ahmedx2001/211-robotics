@@ -32,9 +32,17 @@ task LCD() {
 			displayLCDString(1, 6, AutoName);
 		}
 		else{
-			displayLCDNumber(1, 0, abs(SensorValue(TensionEncoder)));
-			displayLCDNumber(1, 6, AutoSelect);
-			displayLCDString(1, 8, AutoName);
+			if (Frame == 1){
+				displayLCDNumber(1, 0, abs(SensorValue(TensionEncoder)));
+				displayLCDNumber(1, 6, AutoSelect);
+				displayLCDString(1, 8, AutoName);
+			}
+			else if (Frame == 2){
+				displayLCDNumber(1, 0, Heading);
+				displayLCDNumber(1, 5, Ypos);
+				displayLCDNumber(1, 8, Ypos);
+
+			}
 
 
 			if (nLCDButtons == 1){
@@ -115,6 +123,7 @@ task main()
 	GyroInit(); // Initilize the Gyro
 	wait1Msec(2000);
 	startTask(LCD);
+	startTask(PositionTrack);
 
 
 	while (true)
@@ -144,12 +153,14 @@ task main()
 			// stop tasks that let the robot move
 			stopTask(autonomous);
 			stopTask(usercontrol);
+			stopTask(AutoMove);
 		}
 		// DRIVER CONTROL
 		else
 		{
 			// start user control tasks
 			stopTask(autonomous);
+			stopTask(AutoMove);
 			startTask(usercontrol);
 
 			// Here we repeat loop waiting for user control to end and (optionally) start

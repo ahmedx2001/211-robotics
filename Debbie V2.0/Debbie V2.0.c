@@ -1,7 +1,7 @@
 #pragma config(Sensor, in1,    Gyro,           sensorGyro)
 #pragma config(Sensor, in2,    BowPot,         sensorPotentiometer)
-#pragma config(Sensor, dgtl7,  DriveRight,     sensorQuadEncoder)
-#pragma config(Sensor, dgtl9,  DriveLeft,      sensorQuadEncoder)
+#pragma config(Sensor, dgtl7,  RightEncoder,   sensorQuadEncoder)
+#pragma config(Sensor, dgtl9,  LeftEncoder,    sensorQuadEncoder)
 #pragma config(Sensor, dgtl11, TensionEncoder, sensorQuadEncoder)
 #pragma config(Motor,  port1,           Intake,        tmotorVex393TurboSpeed_HBridge, openLoop)
 #pragma config(Motor,  port2,           LeftDrive1,    tmotorVex393TurboSpeed_MC29, openLoop)
@@ -22,31 +22,51 @@
 #pragma autonomousDuration(20)
 #pragma userControlDuration(120)
 
-int MidTension = 2400;
-int CloseTension = 4700;
+
+/////////// Global Variables //////////////
+
+// Defult Autonomous
 int AutoSelect = 1;
 
-#include "Functions.c"
+// Tension Adjustment
+int MidTension = 1600;
+int CloseTension = 3500;
+
+// Autofeed
+int AutoFeed = 85;
+
+// Position Tracking
+int Frame = 1;
+float Heading;
+float Xpos;
+float Ypos;
+float Distance;
+float DistanceTot;
+float StartPositionX;
+float StartPositionY;
+float StartHeading;
+
+
+// Files
 #include "GyroLib.c"
+#include "Functions.c"
+#include "PositionLibrary.c"
 #include "Vex_Competition_Includes.c"   //Main competition background code...do not modify!
 
-/////////////////////////////////////////////////////////////////////////////////////////
-//
-//                                 Autonomous Task
-//
-/////////////////////////////////////////////////////////////////////////////////////////
 
+// AUTO
 task autonomous()
 {
+	startTask(AutoMove);
+	// Go to X 3in, Y 2 in, finish with 180 degree angle
+	Go(2,3,180);
 
+
+	// Kill Auto
+	stopTask(autonomous);
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////
-//
-//                                 User Control Task
-//
-/////////////////////////////////////////////////////////////////////////////////////////
-
+// DRIVER CONTROL
 task usercontrol()
 {
 	int LeftDrive = 0;
@@ -57,6 +77,7 @@ task usercontrol()
 	int TensionSpeed = 0;
 	int TensionTarget = 0;
 	int Tension = 0;
+	int TensionZero = 0;
 	int AutoBow = 0;
 	bool JustPressed = false;
 
@@ -74,7 +95,7 @@ task usercontrol()
 		}
 		BaseSpeed(LeftDrive, RightDrive);
 
-		////// BOW AND TEST //////
+		////// BOW //////
 		if (abs(vexRT[Ch2]) > 10)
 			BowDrive = (vexRT[Ch2]);
 		else
@@ -108,7 +129,7 @@ task usercontrol()
 			if (JustPressed == false){
 				JustPressed = true;
 				if (AutoBow == 0){
-					AutoBow = 85;
+					AutoBow = AutoFeed;
 				}
 				else{
 					AutoBow = 0;
@@ -122,20 +143,24 @@ task usercontrol()
 		//////// TENSION BUTTONS ////////
 		if(vexRT[Btn8D] == 1){
 			TensionTarget = -1;
+			TensionZero++;
 			if(vexRT[Btn8L] == 1){
 				TensionSpeed = -127;
 			}
 			else if(vexRT[Btn8R] == 1){
 				TensionSpeed = 127;
 			}
+			else if (TensionZero > 300){
+				SensorValue(TensionEncoder) = 0;
+			}
 		}
-		else if(vexRT[Btn8L] == 1){
+		else if(vexRT[Btn8R] == 1){
 			TensionTarget = 0;
 		}
 		else if(vexRT[Btn8U] == 1){
 			TensionTarget = MidTension;
 		}
-		else if(vexRT[Btn8R] == 1){
+		else if(vexRT[Btn8L] == 1){
 			TensionTarget = CloseTension;
 		}
 
