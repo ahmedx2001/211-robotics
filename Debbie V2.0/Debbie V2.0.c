@@ -33,7 +33,7 @@ int MidTension = 1600;
 int CloseTension = 3500;
 
 // Autofeed
-int AutoFeed = 85;
+int AutoFeed = 80;
 
 // Position Tracking
 int Frame = 1;
