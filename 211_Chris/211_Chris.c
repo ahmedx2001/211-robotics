@@ -37,13 +37,34 @@ void pre_auton()
 
 task autonomous()
 {
-	//startTask( FwControlTask );
-	//FwVelocitySet( 150, 0.47 );
-	//wait1Msec(500);
-	//motor[Intake] = 127;
-	//motor[Index]   = 127;
+	//startTask(autocomp)
+	//startTask(skills)
 
 	AutonomousCodePlaceholderForTesting();  // Remove this function call once you have "real" code.
+}
+
+//////////Autonomous Competition/////////
+void autocomp ()
+{
+	targetRPM = full;
+	wait1Msec(500);
+	motor[Intake] = 127;
+	motor[Index]   = 127;
+	wait1Msec(500);
+	motor[Intake] = 0;
+	motor[Index]   = 0;
+}
+
+/////////Skills Competition/////////
+void skills ()
+{
+	targetRPM = full;
+	motor[Intake] = 127;
+	motor[Index]   = 127;
+	wait1Msec(1000);
+	//turnLeft(2, 90, 40);
+	//forward(3, 4, 100);
+	//turnRight(2, 90, 40);
 }
 
 task usercontrol()
@@ -63,22 +84,22 @@ task usercontrol()
 		//////// DRIVE ////////
 		if(abs(vexRT[Ch3]) > 20 || abs(vexRT[Ch4]) > 20 ||
 			abs(vexRT[Ch1]) > 20 || abs(vexRT[Ch2]) > 20){
-			motor[LeftDrive]  = ((vexRT[Ch2] + vexRT[Ch1]) - (vexRT[Ch3] - vexRT[Ch4])/2);
-			motor[RightDrive]   = ((vexRT[Ch2] - vexRT[Ch1]) - (vexRT[Ch3] + vexRT[Ch4])/2);
+			motor[LeftDrive]  = ((vexRT[Ch2] + vexRT[Ch1]) - (vexRT[Ch3] - vexRT[Ch4])/3);
+			motor[RightDrive]   = ((vexRT[Ch2] - vexRT[Ch1]) - (vexRT[Ch3] + vexRT[Ch4])/3);
 		}
 		else{
 			motor[LeftDrive]  = 0;
 			motor[RightDrive]  = 0;
 		}
 
-		/////// INTAKE ////////
+		/////// INDEXER ////////
 
 		if(vexRT[Btn5U]) motor[Index] = 127;
 		else if(vexRT[Btn5D]) motor[Index] = -127;
 		else motor[Index] = 0;
 
 
-		/////// INDEXER ////////
+		/////// INTAKE ////////
 		if(vexRT[Btn6U]) motor[Intake] = 127;
 		else if(vexRT[Btn6D]) motor[Intake] = -127;
 		else motor[Intake] = 0;
