@@ -28,7 +28,6 @@
 
 #include "PID_Library.c"
 
-
 int lastIntakeState = 0;
 int intakeSpeed = 0;
 
@@ -42,7 +41,7 @@ task autonomous()
 	startTask( pid );
 	targetRPM = full;
 
-	wait1Msec(3000);
+	wait1Msec(2500);
 
 	while(true){
 		motor[Index] = 127;
@@ -50,7 +49,7 @@ task autonomous()
 		wait1Msec(400);
 		motor[Index] = 0;
 		motor[Intake] = 0;
-		wait1Msec(700);
+		wait1Msec(1000);
 	}
 }
 
