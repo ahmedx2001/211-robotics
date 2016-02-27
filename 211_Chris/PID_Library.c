@@ -14,14 +14,15 @@ shooter( int value )
 
 
 const int full = 3050;
-const int half = 2100;
+const int half = 2500
+const int close = 2100;
 
 const bool debug = true;
 
 //pid values
 const float pVal = 0.5;
-const float iVal = 0;
-const float dVal = 0;
+const float iVal = 0.000021;
+const float dVal = 0.00651;
 
 //PID variables
 int error = 0;

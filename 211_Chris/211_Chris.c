@@ -78,7 +78,7 @@ task usercontrol()
 		// Different speeds set by buttons
 		if( vexRT[ Btn8U ] == 1 ) targetRPM = full;
 		else if( vexRT[ Btn8L ] == 1 ) targetRPM = half;
-		else if( vexRT[ Btn8R ] == 1 )
+		else if( vexRT[ Btn8R ] == 1 ) targetRPM = close;
 		else if( vexRT[ Btn8D ] == 1 )targetRPM = 0;
 
 		//////// DRIVE ////////
