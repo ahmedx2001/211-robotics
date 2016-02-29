@@ -131,7 +131,7 @@ task GyroTask()
     while(true)
         {
         // get current gyro value (deg * 10)
-        gyro_value = SensorValue[theGyro.port];
+        gyro_value = -SensorValue[theGyro.port];
 
         // Filter drift when not moving
         // check this every 250mS

@@ -36,7 +36,7 @@ int CloseTension = 3500;
 int AutoFeed = 80;
 
 // Position Tracking
-int Frame = 1;
+int Frame = 2;
 float Heading;
 float Xpos;
 float Ypos;
@@ -85,7 +85,11 @@ task usercontrol()
 	{
 		Tension = SensorValue(TensionEncoder);
 		////// DRIVE STICK //////
-		if(abs(vexRT[Ch3]) > 10 ||abs(vexRT[Ch4]) > 10){
+		if(vexRT(Btn5D) == 1){
+			LeftDrive  = (vexRT[Ch3] + vexRT[Ch4])/3;
+			RightDrive   = (vexRT[Ch3] - vexRT[Ch4])/3;
+		}
+		else if(abs(vexRT[Ch3]) > 10 ||abs(vexRT[Ch4]) > 10){
 			LeftDrive  = (vexRT[Ch3] + vexRT[Ch4]);
 			RightDrive   = (vexRT[Ch3] - vexRT[Ch4]);
 		}

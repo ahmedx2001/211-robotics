@@ -39,7 +39,7 @@ task LCD() {
 			}
 			else if (Frame == 2){
 				displayLCDNumber(1, 0, Heading);
-				displayLCDNumber(1, 5, Ypos);
+				displayLCDNumber(1, 5, Xpos);
 				displayLCDNumber(1, 8, Ypos);
 
 			}
