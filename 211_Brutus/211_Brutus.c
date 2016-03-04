@@ -1,9 +1,10 @@
 #pragma config(Sensor, in1,    TurnGyro,       sensorGyro)
-#pragma config(Sensor, dgtl1,  ledSpeed,       sensorDigitalIn)
-#pragma config(Sensor, dgtl2,  ledFull,        sensorDigitalIn)
-#pragma config(Sensor, dgtl3,  ledHalf,        sensorDigitalIn)
-#pragma config(Sensor, dgtl7,  LeftEncoder,    sensorQuadEncoder)
-#pragma config(Sensor, dgtl9,  RightEncoder,   sensorQuadEncoder)
+#pragma config(Sensor, dgtl1,  ledSpeed,       sensorDigitalOut)
+#pragma config(Sensor, dgtl2,  ledFull,        sensorDigitalOut)
+#pragma config(Sensor, dgtl3,  ledHalf,        sensorDigitalOut)
+#pragma config(Sensor, dgtl4,  ball,           sensorDigitalIn)
+#pragma config(Sensor, dgtl7,  leftEncoder,    sensorQuadEncoder)
+#pragma config(Sensor, dgtl9,  rightEncoder,   sensorQuadEncoder)
 #pragma config(Sensor, dgtl11, ShooterEncoder, sensorQuadEncoder)
 #pragma config(Motor,  port1,           Intake,        tmotorVex393TurboSpeed_HBridge, openLoop)
 #pragma config(Motor,  port2,           LeftShooter1,  tmotorVex393HighSpeed_MC29, openLoop, reversed)
@@ -24,33 +25,108 @@
 #pragma autonomousDuration(20)
 #pragma userControlDuration(120)
 
-#include "Vex_Competition_Includes.c"   //Main competition background code...do not modify!
+// Defult Autonomous
+int AutoSelect = 1;
 
+#include "Vex_Competition_Includes1.c"
 #include "PID_Library.c"
+#include "functions.c"
+
+
+
 
 int lastIntakeState = 0;
 int intakeSpeed = 0;
+int lastBallState = 1;
 
-void pre_auton()
-{
-	bStopTasksBetweenModes = true;
+void auto (){
+	startTask( pid );
+	targetRPM = full;
+
+	wait1Msec(3000);
+
+	motor[Intake] = 127;
+
+	while(true){
+		motor[Index] = 127;
+
+		while(!((lastBallState != SensorValue[ball]) && SensorValue[ball] == 1)){}
+		motor[Index] = 0;
+		wait1Msec(1500);
+
+		lastBallState = SensorValue[ball];
+	}
+}
+
+void skills(){
+	int counter = 0;
+	startTask( pid );
+	targetRPM = skill;
+
+	wait1Msec(3000);
+
+	motor[Intake] = 127;
+
+	while(counter < 39){
+		motor[Index] = 127;
+
+		while(!((lastBallState != SensorValue[ball]) && SensorValue[ball] == 1)){}
+		motor[Index] = 0;
+		wait1Msec(1500);
+
+		lastBallState = SensorValue[ball];
+		counter++;
+	}
+
+	counter = 0;
+	//drive
+
+	while(counter < 39){
+		motor[Index] = 127;
+
+		while(!((lastBallState != SensorValue[ball]) && SensorValue[ball] == 1)){}
+		motor[Index] = 0;
+		wait1Msec(1500);
+
+		lastBallState = SensorValue[ball];
+		counter++;
+	}
+}
+void move(){
+	motor[LeftDrive] = -100;
+	motor[RightDrive] = 120;
+	wait1Msec(500);
+	motor[LeftDrive] = 0;
+	motor[RightDrive] = 0;
+
+	motor[LeftDrive] = -127;
+	motor[RightDrive] = -90;
+	wait1Msec(1000);
+	motor[LeftDrive] = 0;
+	motor[RightDrive] = 0;
 }
 
 task autonomous()
 {
-	startTask( pid );
-	targetRPM = full;
+	switch(AutoSelect)
+	{
+	case 1:
+		// Skills
+		skills();
+		break;
 
-	wait1Msec(2500);
-
-	while(true){
-		motor[Index] = 127;
-		motor[Intake] = 127;
-		wait1Msec(400);
-		motor[Index] = 0;
-		motor[Intake] = 0;
-		wait1Msec(1000);
+	case 2:
+		//BALL AUTO
+		auto();
+		break;
+	case 9:
+		//TEST
+		break;
+	default:
+		//NOTHING
 	}
+	auto();
+	//skills();
 }
 
 task usercontrol()
@@ -64,7 +140,7 @@ task usercontrol()
 	{
 		/////////SHOOTER/////////
 		if (vexRT[Btn8UXmtr2]) targetRPM = full;
-		else if (vexRT[Btn8LXmtr2])targetRPM = 1000;
+		else if (vexRT[Btn8LXmtr2]);
 		else if (vexRT[Btn8RXmtr2])targetRPM = half;
 		else if (vexRT[Btn8DXmtr2])targetRPM = 0;
 
@@ -105,5 +181,6 @@ task usercontrol()
 
 		// Don't hog the cpu :)
 		wait1Msec(10);
+
 	}
 }
