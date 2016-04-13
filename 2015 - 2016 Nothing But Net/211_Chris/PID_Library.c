@@ -13,9 +13,11 @@ shooter( int value )
 }
 
 
-const int full = 3050;
-const int half = 2500
-const int close = 2100;
+const int full = 3037;
+const int half = 2400;
+const int close = 2000;
+const int auto = 2380;
+const int gameauto = 3005;
 
 const bool debug = true;
 

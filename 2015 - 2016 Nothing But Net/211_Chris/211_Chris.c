@@ -1,5 +1,6 @@
-#pragma config(Sensor, dgtl7,  LeftEncoder,    sensorQuadEncoder)
-#pragma config(Sensor, dgtl9,  RightEncoder,   sensorQuadEncoder)
+#pragma config(Sensor, dgtl6,  rightEncoder,   sensorQuadEncoder)
+#pragma config(Sensor, dgtl8,  leftEnco,       sensorQuadEncoder)
+#pragma config(Sensor, dgtl10, ball,           sensorDigitalIn)
 #pragma config(Sensor, dgtl11, ShooterEncoder, sensorQuadEncoder)
 #pragma config(Motor,  port1,           BLShooter,     tmotorVex393HighSpeed_HBridge, openLoop)
 #pragma config(Motor,  port2,           LeftDrive,     tmotorVex393TurboSpeed_MC29, openLoop)
@@ -21,9 +22,88 @@
 #pragma userControlDuration(120)
 
 #include "Vex_Competition_Includes.c"   //Main competition background code...do not modify!
-
 #include "PID_Library.c"
 
+int lastBallState = 1;
+int i = 0;
+
+//////////Autonomous Competition/////////
+task autocomp ()
+{
+	startTask(pid);
+	targetRPM = gameauto;
+	wait1Msec(6100);
+	motor[Intake] = 127;
+	for(i=0; i<4; i++)
+	{
+		motor[Index] = 127;
+		while(!((lastBallState != SensorValue[ball]) && SensorValue[ball] == 1)){}
+		motor[Index] = 0;
+		wait1Msec(1600);
+		lastBallState = SensorValue[ball];
+	}
+	targetRPM = 0;
+	motor[Intake] = 0;
+	motor[RightDrive] = 50;
+	motor[LeftDrive] = -50;
+	wait1Msec(1200);
+	motor[RightDrive] = 0;
+	motor[LeftDrive] = 0;
+}
+
+/////////Skills Competition/////////
+task skills ()
+{
+	//shoot
+
+	startTask(pid);
+	targetRPM = auto;
+	motor[Intake] = 127;
+	wait1Msec(2000);
+	for (i=0; i<32; i++){
+		motor[Index] = 127;
+		while(!((lastBallState != SensorValue[ball]) && SensorValue[ball] == 1)){}
+		motor[Index] = 0;
+		wait1Msec(1000);
+		lastBallState = SensorValue[ball];
+	}
+
+	//turn
+	motor[Intake] = 0;
+	motor[RightDrive] =-50;
+	motor[LeftDrive] = 50;
+	wait1Msec(630);
+
+	//drive
+	motor[RightDrive] = 100;
+	motor[LeftDrive] = 100;
+
+	//turn
+	wait1Msec(3200);
+	motor[RightDrive] = 50;
+	motor[LeftDrive] = -50;
+	wait1Msec(600);
+
+	//drive
+	motor[RightDrive] = 10;
+	motor[LeftDrive] = 10;
+	wait1Msec(200);
+
+	//park
+	motor[RightDrive] = 0;
+	motor[LeftDrive] = 0;
+
+	//shoot
+	motor[Intake] = 127;
+	for (i=0; i<32; i++){
+		motor[Index] = 127;
+		while(!((lastBallState != SensorValue[ball]) && SensorValue[ball] == 1)){}
+		motor[Index] = 0;
+		wait1Msec(1200);
+		lastBallState = SensorValue[ball];
+	}
+
+}
 
 void pre_auton()
 {
@@ -37,34 +117,10 @@ void pre_auton()
 
 task autonomous()
 {
-	//startTask(autocomp)
-	//startTask(skills)
+	startTask(autocomp);
+	//startTask(skills);
 
 	AutonomousCodePlaceholderForTesting();  // Remove this function call once you have "real" code.
-}
-
-//////////Autonomous Competition/////////
-void autocomp ()
-{
-	targetRPM = full;
-	wait1Msec(500);
-	motor[Intake] = 127;
-	motor[Index]   = 127;
-	wait1Msec(500);
-	motor[Intake] = 0;
-	motor[Index]   = 0;
-}
-
-/////////Skills Competition/////////
-void skills ()
-{
-	targetRPM = full;
-	motor[Intake] = 127;
-	motor[Index]   = 127;
-	wait1Msec(1000);
-	//turnLeft(2, 90, 40);
-	//forward(3, 4, 100);
-	//turnRight(2, 90, 40);
 }
 
 task usercontrol()
