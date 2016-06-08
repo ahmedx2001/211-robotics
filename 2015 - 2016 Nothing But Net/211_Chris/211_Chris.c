@@ -60,7 +60,7 @@ task skills ()
 	targetRPM = auto;
 	motor[Intake] = 127;
 	wait1Msec(2000);
-	for (i=0; i<32; i++){
+	for (i=0; i<10; i++){
 		motor[Index] = 127;
 		while(!((lastBallState != SensorValue[ball]) && SensorValue[ball] == 1)){}
 		motor[Index] = 0;
@@ -95,7 +95,7 @@ task skills ()
 
 	//shoot
 	motor[Intake] = 127;
-	for (i=0; i<32; i++){
+	for (i=0; i<10; i++){
 		motor[Index] = 127;
 		while(!((lastBallState != SensorValue[ball]) && SensorValue[ball] == 1)){}
 		motor[Index] = 0;
