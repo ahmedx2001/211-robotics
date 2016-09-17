@@ -6,8 +6,7 @@
 task main()
 {
 	while(1==1){
-		motor[left] =  vexRT[Ch4] - vexRT[Ch3] \
-		- (0.3*vexRT[Ch1]);
+		motor[left] =  vexRT[Ch4] - vexRT[Ch3] - (0.3*vexRT[Ch1]);
 		motor[Right] = vexRT[Ch4]  + vexRT[Ch3] - (0.3*vexRT[Ch1]);
 		motor[Back] = vexRT[Ch4] + vexRT[Ch1];
 	}
